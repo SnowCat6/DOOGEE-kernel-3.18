@@ -1,0 +1,128 @@
+
+/dts-v1/;
+
+#include "mt6735.dtsi"
+
+/ {
+	memory@00000000 {
+		device_type = "memory";
+		reg = <0 0x40000000 0 0x80000000>;
+	};
+
+	bus {
+		compatible = "simple-bus";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges = <0 0 0 0xffffffff>;
+
+		MTKFB@5e200000 {
+			compatible = "mediatek,MTKFB";
+			reg = <0x7F000000 0x1000000>;
+		};
+
+		I2C0@0x11007000 {
+			gt9xx@5d {
+				compatible = "gt9xx";
+				reg = <0x5d>;
+			};
+
+			bq24261@6b {
+				compatible = "bq24261";
+				reg = <0x6b>;
+			};
+
+			mt6306@64 {
+				compatible = "mediatek,mt6306";
+				reg = <0x64>;
+			};
+		};
+
+		I2C1@0x11008000 {
+			yas533@2e {
+				compatible = "yas533";
+				reg = <0x2e>;
+			};
+
+			mpu-6515@68 {
+				compatible = "mpu-6515";
+				reg = <0x68>;
+			};
+
+			bmp180@77 {
+				compatible = "bmp180";
+				reg = <0x77>;
+			};
+
+			cm36652@60 {
+				compatble = "cm36652";
+				reg = <0x60>;
+			};
+
+			mt6605@28 {
+				compatible = "mediatek,mt6605";
+				reg = <0x28>;
+			};
+		};
+
+	};
+
+	mt-extmem@0 {
+		compatible = "mediatek,mt-extmem";
+	};
+  /*  start sensor */
+		cust_accel@0 {
+		compatible 				= "mediatek,MC3410";
+		i2c_num 				= <2>;
+		i2c_addr				= <0x4c 0 0 0>;
+		direction 				= <0>;
+		power_id 				= <0xffff>;
+		power_vol				= <0>;
+		firlen 					= <0>;
+		is_batch_supported  			= <0>;
+  		};
+  
+		cust_alsps@0 {
+		compatible 				= "mediatek,CM36652";
+		i2c_num 				= <2>;
+		i2c_addr 				= <0x60 0 0 0>;
+		polling_mode_ps			= <0>;
+		polling_mode_als		= <1>;
+		power_id   				= <0xffff>;
+		power_vol  				= <0>; 
+/* Total has 15 level*/
+		als_level  				= <0 328 861 1377 3125 7721 7767 12621 23062 28430 33274 
+47116 57694 57694 65535>;
+/*  Total has 16 range*/
+		als_value  				= <0 133 304 502 1004 2005 3058 5005 8008 10010 12000 16000 
+20000 20000 20000 20000>;
+		ps_threshold_high		=  <26>;
+		ps_threshold_low		=  <21>;
+		is_batch_supported_ps	= <0>;
+		is_batch_supported_als	= <0>;
+		};
+		
+  		cust_mag@0 {
+		compatible				= "mediatek,AKM09911";
+		i2c_num 				= <2>;
+		i2c_addr				= <0x0D 0 0 0>;
+		direction 				= <1>;
+		power_id 				= <0xffff>;
+		power_vol				= <0>;
+		is_batch_supported  	= <0>;
+  		};
+		
+  		cust_gyro@0 {
+		compatible 				= "mediatek,ITG1010";
+		i2c_num 				= <2>;
+		i2c_addr				= <0x68 0 0 0>;
+		direction 				= <3>;
+		power_id 				= <0xffff>;
+		power_vol				= <0>;
+		firlen 					= <0>;
+		is_batch_supported  	= <0>;
+  		};
+
+
+  /* end sensor */
+
+};
