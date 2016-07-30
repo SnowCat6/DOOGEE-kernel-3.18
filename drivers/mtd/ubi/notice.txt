@@ -1,0 +1,25 @@
+Copyright (C) [2016] [Artem Bityutskiy of GPL author] & MediaTek Inc. ,
+[UBI of MediaTek program] is modified on [05/20/2016]  by MediaTek Inc.
+based on  GPL version 2.
+This program is free software; you can redistribute it and/or modify it
+under the terms of  version 2 of the GNU General Public License  as
+published by the Free Software Foundation.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE.  See [GNU General Public License link ] for more details.
+You can receive a complete machine-readable copy of the source code by sending
+a written request to:
+                MediaTek Inc.
+Attn: Mail_AlpsNandSupport@mediatek.com
+No. 1, Dusing Road 1, Science-based Industrial Park,
+Hsin-Chu City,
+Taiwan, R.O.C.
+
+Your request should include:
+    (i) the name of the covered binary,
+    (ii) the version of MediaTek program containing the covered binary,
+    (iii) your name,
+    (iv) your company name (if applicable) and
+    (v) your return mailing and email address (if available).
+We may charge you a nominal fee to cover the cost of the media and distribution.
+Your request must be sent within three (3) years of the date you received the GPL covered code.
