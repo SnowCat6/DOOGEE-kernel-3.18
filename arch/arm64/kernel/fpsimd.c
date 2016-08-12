@@ -323,9 +323,8 @@ static inline void fpsimd_hotplug_init(void)
 }
 
 #else
-static inline void fpsimd_hotplug_init(void) { }
+static inline void fpsimd_pm_init(void) { }
 #endif
-
 /*
  * FP/SIMD support code initialisation.
  */

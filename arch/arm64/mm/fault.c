@@ -523,8 +523,6 @@ void __init hook_fault_code(int nr,
 	fault_info[nr].name = name;
 }
 #endif
-
-
 asmlinkage int __exception do_debug_exception(unsigned long addr,
 					      unsigned int esr,
 					      struct pt_regs *regs)
