@@ -11,9 +11,6 @@
 /*
  * This handles all read/write requests to block devices
  */
-#if defined(CONFIG_MT_ENG_BUILD)
-#define DEBUG 1
-#endif
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/backing-dev.h>

@@ -1,9 +1,6 @@
 /*
  * Functions related to segment and merge handling
  */
-#if defined(CONFIG_MT_ENG_BUILD)
-#define DEBUG 1
-#endif
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/bio.h>
@@ -239,7 +236,7 @@ single_segment:
 	}
 
 	for_each_bio(bio)
-		bio_for_each_segment(bvec, bio, iter) {
+		bio_for_each_segment(bvec, bio, iter)
 			__blk_segment_map_sg(q, &bvec, sglist, &bvprv, sg,
 					     &nsegs, &cluster);
 #if defined(FEATURE_STORAGE_PID_LOGGER)
@@ -340,8 +337,6 @@ single_segment:
 	} while (0);
 
 #endif
-
-			}
 
 	return nsegs;
 }
