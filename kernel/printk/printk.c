@@ -486,7 +486,6 @@ static u32 truncate_msg(u16 *text_len, u16 *trunc_msg_len,
 	 * get removed too soon.
 	 */
 	u32 max_text_len = log_buf_len / MAX_LOG_TAKE_PART;
-
 	if (*text_len > max_text_len)
 		*text_len = max_text_len;
 	/* enable the warning message */
@@ -624,11 +623,11 @@ static int check_syslog_permissions(int type, bool from_file)
 	 * already done the capabilities checks at open time.
 	 */
 	if (from_file && type != SYSLOG_ACTION_OPEN)
-		return 0;
+		goto ok;
 
 	if (syslog_action_restricted(type)) {
 		if (capable(CAP_SYSLOG))
-			return 0;
+			goto ok;
 		/*
 		 * For historical reasons, accept CAP_SYS_ADMIN too, with
 		 * a warning.
@@ -638,10 +637,11 @@ static int check_syslog_permissions(int type, bool from_file)
 				     "CAP_SYS_ADMIN but no CAP_SYSLOG "
 				     "(deprecated).\n",
 				 current->comm, task_pid_nr(current));
-			return 0;
+			goto ok;
 		}
 		return -EPERM;
 	}
+ok:
 	return security_syslog(type);
 }
 
@@ -1242,6 +1242,7 @@ static size_t msg_print_text(const struct printk_log *msg, enum log_flags prev,
 
 	return len;
 }
+
 static int syslog_print(char __user *buf, int size)
 {
 	char *text;
@@ -1296,7 +1297,7 @@ static int syslog_print(char __user *buf, int size)
 			syslog_prev = msg->flags;
 			n -= syslog_partial;
 			syslog_partial = 0;
-		} else if (!len) {
+		} else if (!len){
 			/* partial read(), remember position */
 			n = size;
 			syslog_partial += n;
@@ -1882,7 +1883,6 @@ asmlinkage int vprintk_emit(int facility, int level,
 
 		if (kern_level) {
 			const char *end_of_header = printk_skip_level(text);
-
 			switch (kern_level) {
 			case '0' ... '7':
 				if (level == -1)
@@ -1963,7 +1963,6 @@ asmlinkage int vprintk_emit(int facility, int level,
 	logbuf_cpu = UINT_MAX;
 	raw_spin_unlock(&logbuf_lock);
 	lockdep_on();
-
 	local_irq_restore(flags);
 
 	/* If called from the scheduler, we can not call up(). */
@@ -2437,7 +2436,7 @@ void console_unlock(void)
 	static u64 seen_seq;
 	unsigned long flags;
 	bool wake_klogd = false;
-	bool retry;
+	bool do_cond_resched, retry;
 
 #if defined(CONFIG_MT_ENG_BUILD) && defined(CONFIG_LOG_TOO_MUCH_WARNING)
 	char aee_str[63];	/* length can not beyond 63 because of aee API args limitation */
@@ -2528,6 +2527,9 @@ skip:
 #endif
 		start_critical_timings();
 		local_irq_restore(flags);
+
+		if (do_cond_resched)
+			cond_resched();
 	}
 	console_locked = 0;
 
@@ -2592,6 +2594,25 @@ void console_unblank(void)
 	for_each_console(c)
 		if ((c->flags & CON_ENABLED) && c->unblank)
 			c->unblank();
+	console_unlock();
+}
+
+/**
+ * console_flush_on_panic - flush console content on panic
+ *
+ * Immediately output all pending messages no matter what.
+ */
+void console_flush_on_panic(void)
+{
+	/*
+	 * If someone else is holding the console lock, trylock will fail
+	 * and may_schedule may be set.  Ignore and proceed to unlock so
+	 * that messages are flushed out.  As this can be called from any
+	 * context and we don't want to get preempted while flushing,
+	 * ensure may_schedule is cleared.
+	 */
+	console_trylock();
+	console_may_schedule = 0;
 	console_unlock();
 }
 
@@ -2839,11 +2860,11 @@ int unregister_console(struct console *console)
 	res = 1;
 	console_lock();
 	if (console_drivers == console) {
-		console_drivers = console->next;
+		console_drivers=console->next;
 		res = 0;
 	} else if (console_drivers) {
-		for (a = console_drivers->next, b = console_drivers;
-		     a; b = a, a = b->next) {
+		for (a=console_drivers->next, b=console_drivers ;
+		     a; b=a, a=b->next) {
 			if (a == console) {
 				b->next = a->next;
 				res = 0;
