@@ -845,12 +845,14 @@ EXPORT_SYMBOL_GPL(alsps_driver_add);
 int ps_report_interrupt_data(int value) 
 {
 	struct alsps_context *cxt = NULL;
+//printk("SnowCat_REPORT_PS: value=%d\n", value);
 	//int err =0;
 	cxt = alsps_context_obj;	
 
     if (cxt->is_get_valid_ps_data_after_enable == false)
     {
-        if(ALSPS_INVALID_VALUE != value)
+// SnowCat GOOD WORK WITH false &&
+        if(false && ALSPS_INVALID_VALUE != value)
         {
             cxt->is_get_valid_ps_data_after_enable = true;
             smp_mb();
@@ -859,9 +861,8 @@ int ps_report_interrupt_data(int value)
             cancel_work_sync(&cxt->report_ps);
         }
     }
-
-    if (cxt->is_ps_batch_enable == false)
-        ps_data_report(cxt->idev,value,3);
+    
+	ps_data_report(cxt->idev,value,3);
 	
 	return 0;
 }

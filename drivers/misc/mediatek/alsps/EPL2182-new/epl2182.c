@@ -43,6 +43,10 @@
 #include <linux/wakelock.h>
 #include <linux/sched.h>
 
+#ifdef CONFIG_POCKETMOD
+#include <linux/pocket_mod.h>
+#endif
+
 #include <alsps.h>
 #include <linux/batch.h>
 #ifdef CUSTOM_KERNEL_SENSORHUB
@@ -491,7 +495,7 @@ static int epl2182_get_als_value(struct epl2182_priv *obj, u16 als)
 
     if(!invalid)
     {
-//		#if defined(MTK_AAL_SUPPORT)
+		#if defined(MTK_AAL_SUPPORT)
         int level_high = obj->hw->als_level[idx];
     	int level_low = (idx > 0) ? obj->hw->als_level[idx-1] : 0;
         int level_diff = level_high - level_low;
@@ -507,7 +511,7 @@ static int epl2182_get_als_value(struct epl2182_priv *obj, u16 als)
 
 		//APS_DBG("ALS: %d [%d, %d] => %d [%d, %d] \n", als, level_low, level_high, value, value_low, value_high);
 		return value;
-//		#endif
+		#endif
         //APS_DBG("ALS: %05d => %05d\n", als, obj->hw->als_value[idx]);
         return obj->hw->als_value[idx];
     }
@@ -518,6 +522,24 @@ static int epl2182_get_als_value(struct epl2182_priv *obj, u16 als)
     }
 }
 
+
+static int epl2182_get_ps_value(struct epl2182_priv *obj, u16 ps)
+{
+
+	int mask = atomic_read(&obj->ps_mask);
+	int  val;
+
+	u8 flag;
+
+	
+	
+	val = -1;
+
+return val;
+
+	
+
+}
 
 static int set_psensor_intr_threshold(uint16_t low_thd, uint16_t high_thd)
 {
@@ -615,7 +637,7 @@ static void epl2182_power(struct alsps_hw *hw, unsigned int on)
 {
 
     static unsigned int power_on = 0;
-
+//printk("SnowCat_epl2182_power: on=%d\n", on);
     APS_FUN();
 
     if(hw->power_id != POWER_NONE_MACRO)
@@ -677,6 +699,8 @@ long epl2182_read_ps(struct i2c_client *client, u16 *data)
 {
     struct epl2182_priv *obj = i2c_get_clientdata(client);
 
+//printk("SnowCat_PS:\n");
+
 	uint8_t read_data[2];	
     if(client == NULL)
     {
@@ -709,6 +733,7 @@ long epl2182_read_ps(struct i2c_client *client, u16 *data)
     //APS_LOG("epl2182 read ps raw data = %d\n", gRawData.ps_raw);
     //APS_LOG("epl2182 read ps binary data = %d\n", gRawData.ps_state);
 
+//printk("SnowCat_PS2: *data=%d\n", *data);
     return 0;
 }
 
@@ -900,6 +925,7 @@ exit:
 #endif //#ifndef FPGA_EARLY_PORTING
 		}
 #endif //#ifdef CUSTOM_KERNEL_SENSORHUB
+//printk("SnowCat_PS_EINT_WORK\n");
 }
 
 
@@ -984,7 +1010,8 @@ static int epl2182_init_client(struct i2c_client *client)
 
 static void epl2182_check_ps_data(struct work_struct *work)
 {
-
+// pass check over this
+//printk("SnowCat PS_CHECK_PS_DATA\n");
    #ifdef CUSTOM_KERNEL_SENSORHUB
     int res = 0;
 
@@ -1015,6 +1042,8 @@ static void epl2182_check_ps_data(struct work_struct *work)
     }
 		}
 	exit:
+// pass OK always
+//printk("SnowCat_PS_EXIT\n");
 	return;
 	#endif
 }
@@ -2065,14 +2094,14 @@ static int epl2182_i2c_probe(struct i2c_client *client, const struct i2c_device_
 	}
 
 
-	err = batch_register_support_info(ID_LIGHT,als_ctl.is_support_batch, 1, 0);
+	err = batch_register_support_info(ID_LIGHT,als_ctl.is_support_batch, 100, 0);
 	if(err)
 	{
 		APS_ERR("register light batch support err = %d\n", err);
 		goto exit_sensor_obj_attach_fail;
 	}
 	
-	err = batch_register_support_info(ID_PROXIMITY,ps_ctl.is_support_batch, 1, 0);
+	err = batch_register_support_info(ID_PROXIMITY,ps_ctl.is_support_batch, 100, 0);
 	if(err)
 	{
 		APS_ERR("register proximity batch support err = %d\n", err);
@@ -2137,7 +2166,36 @@ static int epl2182_i2c_remove(struct i2c_client *client)
 }
 
 
+#ifdef CONFIG_POCKETMOD
+int epl2182_pocket_detection_check(void)
+{
+	int ps_val;
+	int als_val;
 
+	struct epl2182_priv *obj = epl2182_obj;
+	
+	if(obj == NULL)
+	{
+		APS_DBG("[epl2182] epl2182_obj is NULL!");
+		return 0;
+	}
+	else
+	{
+		elan_epl2182_psensor_enable(obj->client, 1);
+
+		msleep(50);
+
+		ps_val = epl2182_get_ps_value(obj, obj->ps);
+		als_val = epl2182_get_als_value(obj, obj->ps);
+
+		APS_DBG("[epl2182] %s als_val = %d, ps_val = %d\n", __func__, als_val, ps_val);
+
+		elan_epl2182_psensor_enable(obj->client, 0);
+
+		return (ps_val);
+	}
+}
+#endif
 /*----------------------------------------------------------------------------*/
 static int alsps_local_init(void)
 {

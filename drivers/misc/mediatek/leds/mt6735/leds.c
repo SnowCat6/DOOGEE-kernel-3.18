@@ -591,6 +591,9 @@ int mt_mt65xx_led_set_cust(struct cust_mt65xx_led *cust, int level)
 	static bool button_flag = false;
 	static int last_level = 0, same_level_cnt = 0;
 	unsigned int BacklightLevelSupport = Cust_GetBacklightLevelSupport_byPWM();
+
+//printk("SnowCat_LCM_AAL: level=%d\n", level);
+
 	/* Mark out since the level is already cliped before sending in */
 	/*
 		if (level > LED_FULL)

@@ -210,7 +210,7 @@ static int disp_pwm_level_remap(disp_pwm_id_t id, int level_1024)
 int disp_pwm_set_backlight(disp_pwm_id_t id, int level_1024)
 {
     int ret;
-
+//printk("SnowCat_LCM: level_1024=level_1024\n");
 #ifdef MTK_DISP_IDLE_LP
     disp_exit_idle_ex("disp_pwm_set_backlight");
 #endif
