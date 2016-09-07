@@ -121,7 +121,7 @@ static struct clk *rockchip_clk_register_frac_branch(const char *name,
 	if (gate_offset >= 0) {
 		gate = kzalloc(sizeof(*gate), GFP_KERNEL);
 		if (!gate)
-			return ERR_PTR(-ENOMEM);
+			goto err_gate;
 
 		gate->flags = gate_flags;
 		gate->reg = base + gate_offset;
@@ -153,6 +153,11 @@ static struct clk *rockchip_clk_register_frac_branch(const char *name,
 				     flags);
 
 	return clk;
+err_div:
+	kfree(gate);
+err_gate:
+	kfree(mux);
+	return ERR_PTR(-ENOMEM);
 }
 
 static DEFINE_SPINLOCK(clk_lock);
