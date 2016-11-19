@@ -2866,7 +2866,7 @@ bool Get_Cam_Regulator(void)
 				sensor_device->of_node =
 				    of_find_compatible_node(NULL, NULL,
 							    "mediatek,camera_hw");
-				/* 若你需要sub也定義的話，需要自己加上
+				/* \ADY\A7A\BB搨nsub\A4]\A9w\B8q\AA\BA\B8隉A\BB搨n\A6菑v\A5[\A4W
 				   if (regVCAMA == NULL) {
 				   regVCAMA_SUB = regulator_get(sensor_device, "SUB_CAMERA_POWER_A");
 				   }

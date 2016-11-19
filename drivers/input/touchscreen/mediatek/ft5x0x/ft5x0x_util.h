@@ -176,7 +176,38 @@ static int touch_event_handler(void *unused)
 		TPD_DEBUG("touch_event_handler start \n");
 		if(tpd_touchinfo(i2c_client, &cinfo, &pinfo) == 0)
 			continue;
+#ifdef FTS_MIUI8_KEYS
+		if ((cinfo.y[0] >= TPD_RES_Y) && (pinfo.y[0] < TPD_RES_Y)
+		&& ((pinfo.p[0] == 0) || (pinfo.p[0] == 2))) {
+			TPD_DEBUG("Dummy release --->\n");
+			tpd_up(pinfo.x[0], pinfo.y[0]);
+			input_sync(tpd->dev);
+			continue;
+		}
 
+		if ((cinfo.y[0] <= TPD_RES_Y && cinfo.y[0] != 0) && (pinfo.y[0] > TPD_RES_Y)
+		&& ((pinfo.p[0] == 0) || (pinfo.p[0] == 2))) {
+			TPD_DEBUG("Dummy key release --->\n");
+			tpd_button(pinfo.x[0], pinfo.y[0], 0);
+			input_sync(tpd->dev);
+			continue;
+		}
+		if ((cinfo.y[0] > TPD_RES_Y) || (pinfo.y[0] > TPD_RES_Y)) 
+		{
+
+				if ((cinfo.p[0] == 0) || (cinfo.p[0] == 2)) {
+						TPD_DEBUG("Key press --->\n");
+						tpd_button(pinfo.x[0], pinfo.y[0], 1);
+				} else if ((cinfo.p[0] == 1) &&
+					((pinfo.p[0] == 0) || (pinfo.p[0] == 2))) {
+						TPD_DEBUG("Key release --->\n");
+						tpd_button(pinfo.x[0], pinfo.y[0], 0);
+				}
+				input_sync(tpd->dev);
+
+			continue;
+		}
+#endif
 		if(cinfo.count > 0)
 		{
 		    for(i =0; i < cinfo.count; i++)

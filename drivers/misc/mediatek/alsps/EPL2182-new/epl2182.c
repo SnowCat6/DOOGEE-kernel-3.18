@@ -574,7 +574,7 @@ int epl2182_get_addr(struct alsps_hw *hw, struct epl2182_i2c_addr *addr)
 /*----------------------------------------------------------------------------*/
 static void epl2182_power(struct alsps_hw *hw, unsigned int on)
 {
-
+#if 0
 	static unsigned int power_on;
 
 	APS_FUN();
@@ -591,7 +591,7 @@ static void epl2182_power(struct alsps_hw *hw, unsigned int on)
 		}
 	}
 	power_on = on;
-
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
