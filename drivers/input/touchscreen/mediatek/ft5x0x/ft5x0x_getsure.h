@@ -1,6 +1,7 @@
 #define FTS_GESTRUE
 
 #include "accdet.h"
+//#include "ft_gesture_lib.h"
 
 #ifdef FTS_GESTRUE
 #define GESTURE_LEFT								0x20
