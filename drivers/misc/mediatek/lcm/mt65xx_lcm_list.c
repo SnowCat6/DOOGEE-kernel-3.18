@@ -67,7 +67,9 @@ LCM_DRIVER *lcm_driver_list[] = {
 #if defined(HCT_OTM1284A_DSI_VDO_HD_BOE)
 	&hct_otm1284a_dsi_vdo_hd_boe,
 #endif
-
+#if defined(NT35521_DSI_6735_H)
+	&nt35521_dsi_6735_H,
+#endif
 
 
 
