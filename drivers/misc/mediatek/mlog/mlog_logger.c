@@ -546,8 +546,9 @@ static void mlog_procinfo(void)
 	 * 1. mediaserver is a suspect in many ANR/FLM cases.
 	 * 2. procesname is "mediaserver" not "/system/bin/mediaserver"
 	 */
-	if (strncmp("mediaserver", p->comm, TASK_COMM_LEN) == 0)
+	if (strncmp("mediaserver", p->comm, TASK_COMM_LEN) == 0){
 		goto collect_proc_mem_info;
+	}
 
 		/* skip root user */
 		if (__kuid_val(cred->uid) == AID_ROOT)

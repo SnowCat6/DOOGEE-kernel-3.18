@@ -3036,7 +3036,7 @@ int __init ccci_mach_init(void)
 {
 	int ret = 0;
 
-	CCCI_MSG("Ver. %s, @ %s %s\n", CCCI_VERSION, __DATE__, __TIME__);
+//	CCCI_MSG("Ver. %s, @ %s %s\n", CCCI_VERSION, __DATE__, __TIME__);
 
 #ifdef ENABLE_DRAM_API
 	/* CCCI_MSG("kernel base:0x%08X, kernel max addr:0x%08X\n", get_phys_offset(), get_max_phys_addr()); */

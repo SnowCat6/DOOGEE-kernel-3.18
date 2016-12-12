@@ -1654,9 +1654,9 @@ static int mtp_release(struct inode *ip, struct file *fp)
     if (!_mtp_dev->dev_disconnected) {
         spin_unlock_irqrestore(&_mtp_dev->lock, flags);
         mtp_send_devicereset_event(_mtp_dev);
-    } else
+    } else{
         spin_unlock_irqrestore(&_mtp_dev->lock, flags);
-
+    }
 	mtp_unlock(&_mtp_dev->open_excl);
 	return 0;
 }

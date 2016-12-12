@@ -2048,7 +2048,7 @@ int ccci_pre_stop(int md_id)
 	if (ctl_b == NULL)
 		return -CCCI_ERR_FATAL_ERR;
 	/* prevent another reset modem action from wdt timeout IRQ during modem reset */
-	if (atomic_inc_and_test(&ctl_b->md_reset_on_going) > 1) {
+	if (atomic_inc_return(&ctl_b->md_reset_on_going) > 1) {
 		CCCI_MSG_INF(md_id, "ctl", "One reset flow is on-going\n");
 		return -CCCI_ERR_MD_IN_RESET;
 	}
