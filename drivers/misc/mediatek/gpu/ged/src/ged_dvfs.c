@@ -735,8 +735,9 @@ static void ged_dvfs_set_bottom_gpu_freq(unsigned int ui32FreqLevel)
 	gpu_bottom_freq = mt_gpufreq_get_freq_by_idx(g_bottom_freq_id);
 
     //if current id is larger, ie lower freq, we need to reflect immedately
-    if(g_bottom_freq_id < mt_gpufreq_get_cur_freq_index()) 
-	ged_dvfs_gpu_freq_commit(g_bottom_freq_id, GED_DVFS_SET_BOTTOM_COMMIT);
+    if(g_bottom_freq_id < mt_gpufreq_get_cur_freq_index()) {
+		ged_dvfs_gpu_freq_commit(g_bottom_freq_id, GED_DVFS_SET_BOTTOM_COMMIT);
+	}
      
 	mutex_unlock(&gsDVFSLock);
 

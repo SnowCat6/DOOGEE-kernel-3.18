@@ -203,8 +203,9 @@ int kbase_device_init(struct kbase_device * const kbdev)
 #endif /* CONFIG_MALI_TRACE_TIMELINE */
 
 	/* fbdump profiling controls set to 0 - fbdump not enabled until changed by gator */
-	for (i = 0; i < FBDUMP_CONTROL_MAX; i++)
+	for (i = 0; i < FBDUMP_CONTROL_MAX; i++){
 		kbdev->kbase_profiling_controls[i] = 0;
+	}
 
 		kbase_debug_assert_register_hook(&kbasep_trace_hook_wrapper, kbdev);
 
