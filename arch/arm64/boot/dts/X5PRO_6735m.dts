@@ -59,7 +59,7 @@
 	alsps_intpin_cfg: alspspincfg {
 
 	    pins_cmd_dat {
-			pins = <PINMUX_GPIO65__FUNC_GPIO65>;
+			pins = <PINMUX_GPIO2__FUNC_GPIO2>;
 			slew-rate = <0>;
 			bias-pull-up = <00>;
 		};
@@ -105,6 +105,7 @@
 		};
 	};
 };
+
 &touch {
 	tpd-resolution = <720 1280>;
 	use-tpd-button = <1>;
@@ -613,10 +614,3 @@
 	};
 };
 /* AUDIO end */
-
-&dsi_te {
-	interrupt-parent = <&eintc>;
-	interrupts = <147 1>;
-	debounce = <147 0>;
-};
-

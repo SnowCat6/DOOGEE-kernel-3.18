@@ -82,4 +82,8 @@ config TPD_CUSTOM_CALIBRATION
 
 	To compile this dirver as a module, choose M here: the
 	module will be called.
+
+config FTS_MIUI8_KEYS
+	bool "ft5x0x keys for MIUI8 support"
+	default n
 endif

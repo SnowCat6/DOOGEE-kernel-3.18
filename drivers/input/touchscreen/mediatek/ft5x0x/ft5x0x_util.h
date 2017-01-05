@@ -176,7 +176,7 @@ static int touch_event_handler(void *unused)
 		TPD_DEBUG("touch_event_handler start \n");
 		if(tpd_touchinfo(i2c_client, &cinfo, &pinfo) == 0)
 			continue;
-#ifdef FTS_MIUI8_KEYS
+#ifdef TS_MIUI8_KEYS
 		if ((cinfo.y[0] >= TPD_RES_Y) && (pinfo.y[0] < TPD_RES_Y)
 		&& ((pinfo.p[0] == 0) || (pinfo.p[0] == 2))) {
 			TPD_DEBUG("Dummy release --->\n");
