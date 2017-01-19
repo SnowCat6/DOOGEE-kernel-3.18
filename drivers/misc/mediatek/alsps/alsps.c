@@ -852,13 +852,15 @@ int ps_report_interrupt_data(int value)
     if (cxt->is_get_valid_ps_data_after_enable == false)
     {
 // SnowCat GOOD WORK WITH false &&
-        if(false && ALSPS_INVALID_VALUE != value)
+        if(ALSPS_INVALID_VALUE != value)
         {
             cxt->is_get_valid_ps_data_after_enable = true;
+
             smp_mb();
             del_timer_sync(&cxt->timer_ps);
             smp_mb();
             cancel_work_sync(&cxt->report_ps);
+
         }
     }
     
