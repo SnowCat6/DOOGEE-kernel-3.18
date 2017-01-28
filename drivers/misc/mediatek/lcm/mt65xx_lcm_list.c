@@ -17,6 +17,21 @@
 #else
 #define LCD_DEBUG(fmt)  printk(fmt)
 #endif
+extern LCM_DRIVER hct_otm1285a_dsi_vdo_hd_boe;
+extern LCM_DRIVER hct_otm1282a_dsi_vdo_hd_auo;
+extern LCM_DRIVER hct_ili9881_dsi_vdo_hd_cpt;
+extern LCM_DRIVER hct_hx8394f_dsi_vdo_hd_cmi;
+extern LCM_DRIVER hct_otm1282_dsi_vdo_hd_auo;
+extern LCM_DRIVER hct_rm68200_dsi_vdo_hd_cpt;
+extern LCM_DRIVER hct_nt35521s_dsi_vdo_hd_boe_50_xld;
+extern LCM_DRIVER hct_hx8394d_dsi_vdo_hd_cmi;
+extern LCM_DRIVER hct_rm68200_dsi_vdo_hd_auo;
+extern LCM_DRIVER hct_nt35521_dsi_vdo_hd_boe;
+extern LCM_DRIVER hct_otm1284a_dsi_vdo_hd_boe;
+extern LCM_DRIVER hct_otm1285a_dsi_vdo_hd_boe_3lane;
+extern LCM_DRIVER nt35521_dsi_6735_H;
+
+
 
 extern LCM_DRIVER otm1282a_hd720_dsi_vdo_60hz_lcm_drv;
 extern LCM_DRIVER otm1282a_hd720_dsi_vdo_lcm_drv;
@@ -244,20 +259,57 @@ extern LCM_DRIVER hct_hx8394f_dsi_vdo_hd_cmi;
 
 LCM_DRIVER* lcm_driver_list[] =
 {
+#if defined(HCT_OTM1285A_DSI_VDO_HD_BOE)
+&hct_otm1285a_dsi_vdo_hd_boe,
+#endif
+#if defined(HCT_OTM1285A_DSI_VDO_HD_BOE_3LANE)
+&hct_otm1285a_dsi_vdo_hd_boe_3lane,
+#endif
+#if defined(HCT_ILI9881_DSI_VDO_HD_CPT)
+&hct_ili9881_dsi_vdo_hd_cpt,
+#endif
+#if defined(HCT_HX8394F_DSI_VDO_HD_CMI)
+&hct_hx8394f_dsi_vdo_hd_cmi,
+#endif
+#if defined(HCT_OTM1282_DSI_VDO_HD_AUO)
+&hct_otm1282_dsi_vdo_hd_auo,
+#endif
+#if defined(HCT_RM68200_DSI_VDO_HD_CPT)
+&hct_rm68200_dsi_vdo_hd_cpt,
+#endif
+#if defined(HCT_NT35521S_DSI_VDO_HD_BOE_50_XLD)
+&hct_nt35521s_dsi_vdo_hd_boe_50_xld,
+#endif
+#if defined(HCT_HX8394D_DSI_VDO_HD_CMI)
+&hct_hx8394d_dsi_vdo_hd_cmi,
+#endif
 #if defined(HCT_OTM1282A_DSI_VDO_HD_AUO)
 	&hct_otm1282a_dsi_vdo_hd_auo,
 #endif
-
 #if defined(HCT_HX8394F_DSI_VDO_HD_CMI)
 	&hct_hx8394f_dsi_vdo_hd_cmi,
 #endif
-
 #if defined(HCT_RM68200_DSI_VDO_HD_CPT)
 	&hct_rm68200_dsi_vdo_hd_cpt,
 #endif
 #if defined(HCT_ILI9881_DSI_VDO_HD_CPT)
 	&hct_ili9881_dsi_vdo_hd_cpt,
 #endif
+#if defined(HCT_RM68200_DSI_VDO_HD_AUO)
+	&hct_rm68200_dsi_vdo_hd_auo,
+#endif
+#if defined(HCT_NT35521_DSI_VDO_HD_BOE)
+	&hct_nt35521_dsi_vdo_hd_boe,
+#endif
+#if defined(HCT_OTM1284A_DSI_VDO_HD_BOE)
+	&hct_otm1284a_dsi_vdo_hd_boe,
+#endif
+#if defined(NT35521_DSI_6735_H)
+	&nt35521_dsi_6735_H,
+#endif
+
+
+
 
 #if defined(OTM1284A_HD720_DSI_VDO_TM)
 	&otm1284a_hd720_dsi_vdo_tm_lcm_drv,
