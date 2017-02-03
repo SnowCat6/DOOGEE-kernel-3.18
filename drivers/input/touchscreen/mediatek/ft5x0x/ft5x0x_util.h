@@ -7,6 +7,7 @@ extern struct tpd_device *tpd;
 */
 #define TPD_PIN_RST 	(0)
 #define TPD_PIN_EINT 	(1)
+#define TS_MIUI8_KEYS
 
 static void ft5x0x_set_rst(bool bSet, int nDelay)
 {

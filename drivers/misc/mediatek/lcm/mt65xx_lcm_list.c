@@ -28,6 +28,9 @@ LCM_DRIVER *lcm_driver_list[] = {
 #if defined(HCT_OTM1285A_DSI_VDO_HD_BOE)
 &hct_otm1285a_dsi_vdo_hd_boe,
 #endif
+#if defined(HCT_OTM1285A_DSI_VDO_HD_BOE_3LANE)
+&hct_otm1285a_dsi_vdo_hd_boe_3lane,
+#endif
 #if defined(HCT_ILI9881_DSI_VDO_HD_CPT)
 &hct_ili9881_dsi_vdo_hd_cpt,
 #endif
@@ -70,7 +73,9 @@ LCM_DRIVER *lcm_driver_list[] = {
 #if defined(NT35521_DSI_6735_H)
 	&nt35521_dsi_6735_H,
 #endif
-
+#if defined(ILI9806E_HLT_HD720_DSI)
+	&ili9806e_hlt_hd720_dsi,
+#endif
 
 
 
