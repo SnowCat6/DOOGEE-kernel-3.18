@@ -24,6 +24,10 @@
 #define FRAME_WIDTH  (480)
 #define FRAME_HEIGHT (854)
 
+// physical dimension
+#define PHYSICAL_WIDTH        (68)
+#define PHYSICAL_HIGHT         (121)
+
 #define REGFLAG_DELAY             							0XFFE
 #define REGFLAG_END_OF_TABLE      							0xFFF   // END OF REGISTERS MARKER
 #define LCM_ID_ILI9806E 										(0x98)
@@ -260,66 +264,86 @@ static void lcm_set_util_funcs(const LCM_UTIL_FUNCS * util)
 
 static void lcm_get_params(LCM_PARAMS * params)
 {
-		memset(params, 0, sizeof(LCM_PARAMS));
-	
-		params->type   = LCM_TYPE_DSI;
+	memset(params, 0, sizeof(LCM_PARAMS)); 
 
-		params->width 	= FRAME_WIDTH;
-		params->height 	= FRAME_HEIGHT;
+	params->type   = LCM_TYPE_DSI;
+	params->width  = FRAME_WIDTH;
+	params->height = FRAME_HEIGHT;
 
-		// enable tearing-free
-		params->dbi.te_mode 				= LCM_DBI_TE_MODE_VSYNC_ONLY;
-		params->dbi.te_edge_polarity		= LCM_POLARITY_RISING;
-    
-    params->dsi.mode = SYNC_PULSE_VDO_MODE;//BURST_VDO_MODE; SYNC_PULSE_VDO_MODE SYNC_EVENT_VDO_MODE
-    
-    params->dsi.esd_check_enable 										= 1;
-    params->dsi.customization_esd_check_enable 			= 0;
-    params->dsi.lcm_esd_check_table[0].cmd 					= 0x0a;
-    params->dsi.lcm_esd_check_table[0].count 				= 1;
-    params->dsi.lcm_esd_check_table[0].para_list[0] = 0x9c;
-    // DSI
-    /* Command mode setting */
-    params->dsi.LANE_NUM = LCM_TWO_LANE;
-    //The following defined the fomat for data coming from LCD engine.
-		params->dsi.data_format.color_order = LCM_COLOR_ORDER_RGB;
-		params->dsi.data_format.trans_seq   = LCM_DSI_TRANS_SEQ_MSB_FIRST;
-		params->dsi.data_format.padding     = LCM_DSI_PADDING_ON_LSB;
-    params->dsi.data_format.format 			= LCM_DSI_FORMAT_RGB888;
- 
-		params->dsi.packet_size=256;
+   params->physical_width=PHYSICAL_WIDTH;
+   params->physical_height=PHYSICAL_HIGHT;
 
-		// Video mode setting		
-    params->dsi.intermediat_buffer_num = 0;//because DSI/DPI HW design change, this parameters should be 0 when video mode in MT658X; or memory leakage
+	// enable tearing-free
+	params->dbi.te_mode 				= LCM_DBI_TE_MODE_DISABLED;
+	params->dbi.te_edge_polarity		= LCM_POLARITY_RISING;
 
-		params->dsi.PS=LCM_PACKED_PS_24BIT_RGB888;
-    
-    params->dsi.word_count=FRAME_WIDTH*3;	//DSI CMD mode need set these two bellow params, different to 6577
-    
-    params->dsi.vertical_sync_active 	= 6;
-    params->dsi.vertical_backporch 		= 14;//8;
-    params->dsi.vertical_frontporch 	= 20;//8;
-    params->dsi.vertical_active_line 	= FRAME_HEIGHT;
-    
-    params->dsi.horizontal_sync_active 	= 10;//8;
-    params->dsi.horizontal_backporch 		= 80;//60;
-    params->dsi.horizontal_frontporch 	= 80;//140;	
-    params->dsi.horizontal_active_pixel = FRAME_WIDTH;
-/*
-		params->dsi.vertical_sync_active				= 1;// 3    2
-		params->dsi.vertical_backporch					= 1;// 20   1
-		params->dsi.vertical_frontporch					= 2; // 1  12
-		params->dsi.vertical_active_line				= FRAME_HEIGHT; 
+#if (LCM_DSI_CMD_MODE)
+	params->dsi.mode   = CMD_MODE;
+#else
+	params->dsi.mode   = SYNC_PULSE_VDO_MODE;//SYNC_EVENT_VDO_MODE;
+#endif
 
-		params->dsi.horizontal_sync_active				= 10;// 50  2
-		params->dsi.horizontal_backporch				= 42;
-		params->dsi.horizontal_frontporch				= 52;
-		params->dsi.horizontal_bllp				= 85;
+	// DSI
+	/* Command mode setting */
+	params->dsi.LANE_NUM				= LCM_TWO_LANE;
+	//The following defined the fomat for data coming from LCD engine. 
 
-		params->dsi.PS=LCM_PACKED_PS_24BIT_RGB888;
-		params->dsi.compatibility_for_nvk = 0;*/
+	params->dsi.data_format.color_order = LCM_COLOR_ORDER_RGB;	
+	params->dsi.data_format.trans_seq = LCM_DSI_TRANS_SEQ_MSB_FIRST; 
+	params->dsi.data_format.padding = LCM_DSI_PADDING_ON_LSB; 
+	params->dsi.data_format.format = LCM_DSI_FORMAT_RGB888; 
 
-    params->dsi.PLL_CLOCK = 210;//dsi clock customization: should config clock value directly
+	// Highly depends on LCD driver capability. 
+	params->dsi.packet_size = 256; 
+	// Video mode setting 
+	params->dsi.intermediat_buffer_num = 2; 
+	params->dsi.PS = LCM_PACKED_PS_24BIT_RGB888; 
+
+	params->dsi.vertical_sync_active = 2; 
+	params->dsi.vertical_backporch = 20; 
+	params->dsi.vertical_frontporch = 20; 
+	params->dsi.vertical_active_line = FRAME_HEIGHT; 
+
+	params->dsi.horizontal_sync_active				= 10;
+	params->dsi.horizontal_backporch				= 60;
+	params->dsi.horizontal_frontporch				= 200;
+	params->dsi.horizontal_active_pixel 			= FRAME_WIDTH;
+
+	// Bit rate calculation
+	//params->dsi.pll_div1=35;		// fref=26MHz, fvco=fref*(div1+1)	(div1=0~63, fvco=500MHZ~1GHz)
+	//params->dsi.pll_div2=1; 		// div2=0~15: fout=fvo/(2*div2)
+
+	/* ESD or noise interference recovery For video mode LCM only. */
+	// Send TE packet to LCM in a period of n frames and check the response.
+	//params->dsi.lcm_int_te_monitor = FALSE;
+	//params->dsi.lcm_int_te_period = 1;		// Unit : frames
+
+	// Need longer FP for more opportunity to do int. TE monitor applicably.
+	//if(params->dsi.lcm_int_te_monitor)
+	//	params->dsi.vertical_frontporch *= 2;
+
+	// Monitor external TE (or named VSYNC) from LCM once per 2 sec. (LCM VSYNC must be wired to baseband TE pin.)
+	//params->dsi.lcm_ext_te_monitor = FALSE;
+	// Non-continuous clock
+	//params->dsi.noncont_clock = TRUE;
+	//params->dsi.noncont_clock_period = 2;	// Unit : frames
+
+	// DSI MIPI Spec parameters setting
+	/*params->dsi.HS_TRAIL = 6;
+	params->dsi.HS_ZERO = 9;
+	params->dsi.HS_PRPR = 5;
+	params->dsi.LPX = 4;
+	params->dsi.TA_SACK = 1;
+	params->dsi.TA_GET = 20;
+	params->dsi.TA_SURE = 6;
+	params->dsi.TA_GO = 16;
+	params->dsi.CLK_TRAIL = 5;
+	params->dsi.CLK_ZERO = 18;
+	params->dsi.LPX_WAIT = 1;
+	params->dsi.CONT_DET = 0;
+	params->dsi.CLK_HS_PRPR = 4;*/
+	// Bit rate calculation
+	params->dsi.PLL_CLOCK = 241;
 }
 
 
