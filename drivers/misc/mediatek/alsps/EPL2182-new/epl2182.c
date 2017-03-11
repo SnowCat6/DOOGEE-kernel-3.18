@@ -583,7 +583,7 @@ static void epl2182_power(struct alsps_hw *hw, unsigned int on)
 	static unsigned int power_on;
 
 	APS_FUN();
-
+/*
 	if (hw->power_id != POWER_NONE_MACRO) {
 		if (power_on == on) {
 			APS_LOG("ignore power control: %d\n", on);
@@ -595,6 +595,7 @@ static void epl2182_power(struct alsps_hw *hw, unsigned int on)
 				APS_ERR("power off fail!!\n");
 		}
 	}
+*/
 	power_on = on;
 
 }
