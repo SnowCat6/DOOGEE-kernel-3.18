@@ -4522,6 +4522,7 @@ static int battery_meter_resume(struct platform_device *dev)
 	signed int DOD_hwocv;
 	struct timespec now_time;
 #endif
+	signed int sleep_interval;
 	struct timespec rtc_time_after_sleep;
 #ifdef MTK_POWER_EXT_DETECT
 	if (KAL_TRUE == bat_is_ext_power())
@@ -4529,6 +4530,8 @@ static int battery_meter_resume(struct platform_device *dev)
 #endif
 
 	get_monotonic_boottime(&rtc_time_after_sleep);
+	sleep_interval =
+		rtc_time_after_sleep.tv_sec - g_rtc_time_before_sleep.tv_sec;
 
 	g_sleep_total_time = timespec_add(g_sleep_total_time,
 		timespec_sub(rtc_time_after_sleep, g_rtc_time_before_sleep));
