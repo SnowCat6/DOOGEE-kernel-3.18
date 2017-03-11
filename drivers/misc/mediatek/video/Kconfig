@@ -57,7 +57,7 @@ config MTK_FB_SUPPORT_ASSERTION_LAYER
 	  If you want to enable AEE assertion layer support, say Y here.
 	  If unsure, say N.
 
-config MTK_AAL_SUPPORT
+config _MTK_AAL_SUPPORT
 	bool "MTK_AAL_SUPPORT"
 	default n
 	help
