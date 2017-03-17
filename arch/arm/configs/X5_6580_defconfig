@@ -469,7 +469,7 @@ CONFIG_CUSTOM_KERNEL_IMGSENSOR="s5k5e2ya_mipi_raw s5k4e2gx_mipi_raw  hi551_mipi_
 
 CONFIG_CUSTOM_KERNEL_LCM="hct_otm1285a_dsi_vdo_hd_boe hct_ili9881_dsi_vdo_hd_cpt hct_hx8394f_dsi_vdo_hd_cmi hct_otm1282_dsi_vdo_hd_auo hct_rm68200_dsi_vdo_hd_cpt hct_nt35521s_dsi_vdo_hd_boe_50_xld hct_hx8394d_dsi_vdo_hd_cmi"
 CONFIG_MTK_KXTJ2_1009_NEW=y
-#CONFIG_MTK_MXC400X_NEW=y
+#CONFIG_MTK_MXC400X-NEW=y
 CONFIG_MTK_EPL2182_NEW=y
 CONFIG_MTK_LENS_DW9714AF_SUPPORT=y
 CONFIG_TOUCHSCREEN_MTK_FT5X0X=y
