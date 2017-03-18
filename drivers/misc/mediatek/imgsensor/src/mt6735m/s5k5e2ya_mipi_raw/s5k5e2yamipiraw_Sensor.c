@@ -70,7 +70,7 @@ static imgsensor_info_struct imgsensor_info = {
 		.grabwindow_width = 1280,		//record different mode's width of grabwindow
 		.grabwindow_height = 960,		//record different mode's height of grabwindow
 		/*	 following for MIPIDataLowPwr2HighSpeedSettleDelayCount by different scenario	*/
-		.mipi_data_lp2hs_settle_dc = 85,
+		.mipi_data_lp2hs_settle_dc = 23,
 		/*	 following for GetDefaultFramerateByScenario()	*/
 		.max_framerate = 300,	
 	},
@@ -82,18 +82,18 @@ static imgsensor_info_struct imgsensor_info = {
 		.starty = 0,
 		.grabwindow_width = 2560,
 		.grabwindow_height = 1920,
-		.mipi_data_lp2hs_settle_dc = 85,
+		.mipi_data_lp2hs_settle_dc = 23,
 		.max_framerate = 300,
 	},
 	.cap1 = {
-		.pclk = 144000000,
+		.pclk = 89616000,
 		.linelength = 2950,
 		.framelength = 2025,
 		.startx = 0,
 		.starty = 0,
 		.grabwindow_width = 2560,
 		.grabwindow_height = 1920,
-		.mipi_data_lp2hs_settle_dc = 85,
+		.mipi_data_lp2hs_settle_dc = 23,
 		.max_framerate = 150,	
 	},
 	.normal_video = {
@@ -104,7 +104,7 @@ static imgsensor_info_struct imgsensor_info = {
 		.starty = 0,
 		.grabwindow_width = 2560,
 		.grabwindow_height = 1440,
-		.mipi_data_lp2hs_settle_dc = 85,
+		.mipi_data_lp2hs_settle_dc = 23,
 		.max_framerate = 300,
 	},
 	.hs_video = {
@@ -115,7 +115,7 @@ static imgsensor_info_struct imgsensor_info = {
 		.starty = 0,
 		.grabwindow_width = 640,
 		.grabwindow_height = 480,
-		.mipi_data_lp2hs_settle_dc = 85,
+		.mipi_data_lp2hs_settle_dc = 23,
 		.max_framerate = 1200,
 	},
 	.slim_video = {
@@ -126,7 +126,7 @@ static imgsensor_info_struct imgsensor_info = {
 		.starty = 0,
 		.grabwindow_width = 1280,
 		.grabwindow_height = 720,
-		.mipi_data_lp2hs_settle_dc = 85,
+		.mipi_data_lp2hs_settle_dc = 23,
 		.max_framerate = 300,
 	},
 	.margin = 4,
@@ -147,9 +147,13 @@ static imgsensor_info_struct imgsensor_info = {
 	
 	.isp_driving_current = ISP_DRIVING_6MA,
 	.sensor_interface_type = SENSOR_INTERFACE_TYPE_MIPI,
-	.mipi_sensor_type = MIPI_OPHY_NCSI2, //0,MIPI_OPHY_NCSI2;  1,MIPI_OPHY_CSI2
-	.mipi_settle_delay_mode = 1,//MIPI_SETTLEDELAY_AUTO,//0,MIPI_SETTLEDELAY_AUTO; 1,MIPI_SETTLEDELAY_MANNUAL
+	.mipi_sensor_type = MIPI_OPHY_CSI2, //0,MIPI_OPHY_NCSI2;  1,MIPI_OPHY_CSI2
+	.mipi_settle_delay_mode = MIPI_SETTLEDELAY_AUTO,//0,MIPI_SETTLEDELAY_AUTO; 1,MIPI_SETTLEDELAY_MANNUAL
+#ifdef VANZO_CAM_S5K5E2_RATION_180	
+	.sensor_output_dataformat = SENSOR_OUTPUT_FORMAT_RAW_Gb,
+#else
 	.sensor_output_dataformat = SENSOR_OUTPUT_FORMAT_RAW_Gr,
+#endif
 	.mclk = 24,
 	.mipi_lane_num = SENSOR_MIPI_2_LANE,
 	.i2c_addr_table = {0x20, 0x6c, 0xff},
@@ -157,7 +161,11 @@ static imgsensor_info_struct imgsensor_info = {
 
 
 static imgsensor_struct imgsensor = {
+#ifdef VANZO_CAM_S5K5E2_RATION_180	
+	.mirror = IMAGE_HV_MIRROR,			//mirrorflip information
+#else
 	.mirror = IMAGE_NORMAL,				//mirrorflip information
+#endif
 	.sensor_mode = IMGSENSOR_MODE_INIT, //IMGSENSOR_MODE enum value,record current sensor mode,such as: INIT, Preview, Capture, Video,High Speed Video, Slim Video
 	.shutter = 0x3D0,					//current shutter
 	.gain = 0x100,						//current gain
@@ -666,15 +674,15 @@ static void capture_setting(kal_uint16 currefps)
 
 	
 	// Clock Setting
-	write_cmos_sensor(0x0305,0x05); //PLLP (def:5)
+	write_cmos_sensor(0x0305,0x06); //PLLP (def:5)
 	write_cmos_sensor(0x0306,0x00);
-	write_cmos_sensor(0x0307,0x70); //PLLM (def:CCh 204d --> B3h 179d)
-	write_cmos_sensor(0x3C1F,0x00); //PLLS 
+	write_cmos_sensor(0x0307,0xDA); //PLLM (def:CCh 204d --> B3h 179d)
+	write_cmos_sensor(0x3C1F,0x01); //PLLS 
 	
 	//S30CCC0 //dphy_band_ctrl
 	
 	write_cmos_sensor(0x0820,0x01); // requested link bit rate mbps : (def:3D3h 979d --> 35Bh 859d)
-	write_cmos_sensor(0x0821,0xC0); 
+	write_cmos_sensor(0x0821,0xB4); 
 	write_cmos_sensor(0x3C1C,0x54); //dbr_div
 	
 	write_cmos_sensor(0x0114,0x01);  //Lane mode
@@ -1152,8 +1160,9 @@ static kal_uint32 get_imgsensor_id(UINT32 *sensor_id)
 		spin_unlock(&imgsensor_drv_lock);
 		do {
 			*sensor_id = return_sensor_id();
-			if (*sensor_id == imgsensor_info.sensor_id) {				
+			if (*sensor_id == imgsensor_info.sensor_id || *sensor_id == 0x55a0 ) {				
 				LOG_INF("i2c write id: 0x%x, sensor id: 0x%x\n", imgsensor.i2c_write_id,*sensor_id);	  
+                *sensor_id = imgsensor_info.sensor_id;
 				return ERROR_NONE;
 			}	
 			LOG_INF("Read sensor id fail, id: 0x%x sensor_id = 0x%x\n", imgsensor.i2c_write_id,*sensor_id);
@@ -1191,7 +1200,7 @@ static kal_uint32 open(void)
 {
 	//const kal_uint8 i2c_addr[] = {IMGSENSOR_WRITE_ID_1, IMGSENSOR_WRITE_ID_2};
 	kal_uint8 i = 0;
-	kal_uint8 retry = 10;
+	kal_uint8 retry = 2;
 	kal_uint32 sensor_id = 0; 
 	LOG_1;
 	LOG_2;
@@ -1202,8 +1211,9 @@ static kal_uint32 open(void)
 		spin_unlock(&imgsensor_drv_lock);
 		do {
 			sensor_id = return_sensor_id();
-			if (sensor_id == imgsensor_info.sensor_id) {				
+			if (sensor_id == imgsensor_info.sensor_id || sensor_id == 0x55a0) {				
 				LOG_INF("i2c write id: 0x%x, sensor id: 0x%x\n", imgsensor.i2c_write_id,sensor_id);	  
+                sensor_id = imgsensor_info.sensor_id;
 				break;
 			}	
 			LOG_INF("Read sensor id fail, write id: 0x%x, id: 0x%x\n", imgsensor.i2c_write_id,sensor_id);
@@ -1212,7 +1222,7 @@ static kal_uint32 open(void)
 		i++;
 		if (sensor_id == imgsensor_info.sensor_id)
 			break;
-		retry = 10;
+		retry = 2;
 	}		 
 	if (imgsensor_info.sensor_id != sensor_id)
 		return ERROR_SENSOR_CONNECT_FAIL;
