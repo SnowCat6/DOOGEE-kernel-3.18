@@ -98,6 +98,13 @@ static struct i2c_board_info i2c_devs2 __initdata = {I2C_BOARD_INFO(CAMERA_HW_DR
 	struct regulator *regVCAMIO = NULL;
 	struct regulator *regVCAMAF = NULL;
 	struct regulator *regSubVCAMD = NULL;
+        //add by vanzo qingzhan begin
+	struct regulator *regSubVCAMA = NULL;
+	struct regulator *regSubVCAMIO = NULL;
+	struct regulator *regMain2VCAMA = NULL;
+	struct regulator *regMain2VCAMD = NULL;
+	struct regulator *regMain2VCAMIO = NULL;
+        //add by vanzo qingzhan end 
 #endif
 
 struct device *sensor_device = NULL;
@@ -434,7 +441,6 @@ int iReadRegI2C(u8 *a_pSendData , u16 a_sizeSendData, u8 *a_pRecvData, u16 a_siz
 	}
 	return 0;
 }
-EXPORT_SYMBOL(iReadRegI2C);
 
 
 /*******************************************************************************
@@ -524,7 +530,6 @@ void kdSetI2CSpeed(u32 i2cSpeed)
 	}
 
 }
-EXPORT_SYMBOL(kdSetI2CSpeed);
 
 /*******************************************************************************
 * kdReleaseI2CTriggerLock
@@ -713,7 +718,6 @@ int iWriteRegI2C(u8 *a_pSendData, u16 a_sizeSendData, u16 i2cId)
 	/* KD_IMGSENSOR_PROFILE("iWriteRegI2C"); */
 	return 0;
 }
-EXPORT_SYMBOL(iWriteRegI2C);
 
 /*******************************************************************************
 * sensor function adapter
@@ -2853,68 +2857,76 @@ static inline int kdSetSensorGpio(int *pBuf)
 }
 
 
+// modify by vanzo qingzhan begin
 #if !defined(CONFIG_MTK_LEGACY)
 bool Get_Cam_Regulator(void)
 {
-	const char *name = NULL;
+	/*int ret;*/
+	struct regulator *name = NULL;
 	struct device_node *node = NULL, *kd_node;
 
 	if (1) {
 		/* check if customer camera node defined */
 		node = of_find_compatible_node(NULL, NULL, "mediatek,camera_hw");
 		if (node) {
-			name = of_get_property(node, "vcama_sub", NULL);
+			/* name = of_get_property(node, "MAIN_CAMERA_POWER_A", NULL); */
+			 name = regulator_get(sensor_device, "vcama_sub"); /*check customer definition*/
 			if (name == NULL) {
-				if (regVCAMA == NULL) {
-					regVCAMA = regulator_get(sensor_device, "vcama");
+			    if (regVCAMA == NULL) {
+				    regVCAMA = regulator_get(sensor_device, "vcama");
+			    }
+			    if (regVCAMD == NULL) {
+				    regVCAMD = regulator_get(sensor_device, "vcamd");
+			    }
+			    if (regVCAMIO == NULL) {
+				    regVCAMIO = regulator_get(sensor_device, "vcamio");
 				}
-				if (regVCAMD == NULL) {
-					regVCAMD = regulator_get(sensor_device, "vcamd");
-				}
-				if (regVCAMIO == NULL) {
-					regVCAMIO = regulator_get(sensor_device, "vcamio");
-				}
-				if (regVCAMAF == NULL) {
-					regVCAMAF = regulator_get(sensor_device, "vcamaf");
-				}
-			} else {
-				PK_DBG("Camera customer regulator name =%s!\n", name);
+			    if (regVCAMAF == NULL) {
+				    regVCAMAF = regulator_get(sensor_device, "vcamaf");
+			    }
+			} else{
+				PK_DBG("Camera customer regulator!\n");
 				/* backup original dev.of_node */
 				kd_node = sensor_device->of_node;
 				/* if customer defined, get customized camera regulator node */
-				sensor_device->of_node =
-				    of_find_compatible_node(NULL, NULL,
-							    "mediatek,camera_hw");
-				/* 若你需要sub也定義的話，需要自己加上
-				   if (regVCAMA == NULL) {
-				   regVCAMA_SUB = regulator_get(sensor_device, "SUB_CAMERA_POWER_A");
-				   }
-				 */
-				if (regVCAMA == NULL) {
-					regVCAMA =
-					    regulator_get(sensor_device, "vcama");
-				}
-				if (regVCAMD == NULL) {
-					regVCAMD =
-					    regulator_get(sensor_device, "vcamd");
-				}
+				sensor_device->of_node = of_find_compatible_node(NULL, NULL, "mediatek,camera_hw");
+
+			    if (regVCAMA == NULL) {
+				    regVCAMA = regulator_get(sensor_device, "vcama");
+			    }
+				if (regSubVCAMA == NULL) {
+				    regSubVCAMA = regulator_get(sensor_device, "vcama_sub");
+			    }
+				if (regMain2VCAMA == NULL) {
+				    regMain2VCAMA = regulator_get(sensor_device, "vcama_main2");
+			    }
+			    if (regVCAMD == NULL) {
+				    regVCAMD = regulator_get(sensor_device, "vcamd");
+			    }
 				if (regSubVCAMD == NULL) {
-					regSubVCAMD =
-					    regulator_get(sensor_device, "vcamd_sub");
-				}
-				if (regVCAMIO == NULL) {
-					regVCAMIO =
-					    regulator_get(sensor_device, "vcamio");
-				}
-				if (regVCAMAF == NULL) {
-					regVCAMAF =
-					    regulator_get(sensor_device, "vcamaf");
-				}
-				/* restore original dev.of_node */
-				sensor_device->of_node = kd_node;
+				    regSubVCAMD = regulator_get(sensor_device, "vcamd_sub");
+			    }
+				if (regMain2VCAMD == NULL) {
+				    regMain2VCAMD = regulator_get(sensor_device, "vcamd_main2");
+			    }
+			    if (regVCAMIO == NULL) {
+				    regVCAMIO = regulator_get(sensor_device, "vcamio");
+			    }
+			    if (regSubVCAMIO == NULL) {
+				    regSubVCAMIO = regulator_get(sensor_device, "vcamio_sub");
+			    }
+				if (regMain2VCAMIO == NULL) {
+				    regMain2VCAMIO = regulator_get(sensor_device, "vcamio_main2");
+			    }
+			    if (regVCAMAF == NULL) {
+				    regVCAMAF = regulator_get(sensor_device, "vcamaf");
+			    }
+
+			    /* restore original dev.of_node */
+			    sensor_device->of_node = kd_node;
 			}
-		} else {
-			PK_DBG("regulator get cust camera node failed!\n");
+		} else{
+			PK_ERR("regulator get cust camera node failed!\n");
 			return FALSE;
 		}
 
@@ -2924,59 +2936,81 @@ bool Get_Cam_Regulator(void)
 }
 
 
-bool _hwPowerOn(KD_REGULATOR_TYPE_T type, int powerVolt)
+bool _hwPowerOn(PowerType type, int powerVolt)
 {
 	bool ret = FALSE;
 	struct regulator *reg = NULL;
 
-	if (type == VCAMA) {
-		reg = regVCAMA;
-	} else if (type == VCAMD) {
-		reg = regVCAMD;
-	} else if (type == VCAMIO) {
-		reg = regVCAMIO;
-	} else if (type == VCAMAF) {
-		reg = regVCAMAF;
-	} else
-		return ret;
+    PK_DBG("[_hwPowerOn]powertype:%d powerId:%d\n", type, powerVolt);
+    if (type == AVDD) {
+	reg = regVCAMA;
+    } else if (type == DVDD) {
+	reg = regVCAMD;
+    } else if (type == DOVDD) {
+	reg = regVCAMIO;
+    } else if (type == AFVDD) {
+	reg = regVCAMAF;
+    }else if (type == SUB_AVDD) {
+	reg = regSubVCAMA;
+    } else if (type == SUB_DVDD) {
+	reg = regSubVCAMD;
+    } else if (type == SUB_DOVDD) {
+	reg = regSubVCAMIO;
+    } else if (type == MAIN2_AVDD) {
+	reg = regMain2VCAMA;
+    } else if (type == MAIN2_DVDD) {
+	reg = regMain2VCAMD;
+    } else if (type == MAIN2_DOVDD) {
+	reg = regMain2VCAMIO;
+    }else
+    	return ret;
 
-	if (reg != NULL && !IS_ERR(reg)) {
-		if (regulator_set_voltage(reg, powerVolt, powerVolt) != 0) {
-			PK_DBG
-			    ("[_hwPowerOn]fail to regulator_set_voltage, powertype:%d powerId:%d\n",
-			     type, powerVolt);
+	if (!IS_ERR(reg)) {
+		if (regulator_set_voltage(reg , powerVolt, powerVolt) != 0) {
+			PK_DBG("[_hwPowerOn]fail to regulator_set_voltage, powertype:%d powerId:%d\n", type, powerVolt);
 			return ret;
-		}
+	}
 		if (regulator_enable(reg) != 0) {
-			PK_DBG("[_hwPowerOn]fail to regulator_enable, powertype:%d powerId:%d\n",
-			       type, powerVolt);
-			return ret;
-		}
-		ret = true;
-	} else {
-		PK_DBG("[_hwPowerOn]IS_ERR_OR_NULL powertype:%d\n", type);
+			PK_DBG("[_hwPowerOn]fail to regulator_enable, powertype:%d powerId:%d\n", type, powerVolt);
+	    return ret;
+	}
+	ret = true;
+    } else {
+		PK_ERR("[_hwPowerOn]IS_ERR_OR_NULL powertype:%d reg %p\n", type,reg);
 		return ret;
 	}
 
 	return ret;
 }
-EXPORT_SYMBOL(_hwPowerOn);
 
-bool _hwPowerDown(KD_REGULATOR_TYPE_T type)
+bool _hwPowerDown(PowerType type)
 {
 	bool ret = FALSE;
 	struct regulator *reg = NULL;
+	PK_DBG("[_hwPowerDown]powertype:%d\n", type);
 
-	if (type == VCAMA) {
-		reg = regVCAMA;
-	} else if (type == VCAMD) {
-		reg = regVCAMD;
-	} else if (type == VCAMIO) {
-		reg = regVCAMIO;
-	} else if (type == VCAMAF) {
-		reg = regVCAMAF;
-	} else
-		return ret;
+    if (type == AVDD) {
+	reg = regVCAMA;
+    } else if (type == DVDD) {
+	reg = regVCAMD;
+    } else if (type == DOVDD) {
+	reg = regVCAMIO;
+    } else if (type == AFVDD) {
+	reg = regVCAMAF;
+    }else if (type == SUB_AVDD) {
+	reg = regSubVCAMA;
+    } else if (type == SUB_DVDD) {
+	reg = regSubVCAMD;
+    } else if (type == SUB_DOVDD) {
+	reg = regSubVCAMIO;
+    } else if (type == MAIN2_AVDD) {
+	reg = regMain2VCAMA;
+    } else if (type == MAIN2_DVDD) {
+	reg = regMain2VCAMD;
+    } else if (type == MAIN2_DOVDD) {
+	reg = regMain2VCAMIO;
+    }else
+    	return ret;
 
 	if (!IS_ERR(reg)) {
 		if (regulator_is_enabled(reg) != 0) {
@@ -2993,9 +3027,8 @@ bool _hwPowerDown(KD_REGULATOR_TYPE_T type)
 	}
 	return ret;
 }
-EXPORT_SYMBOL(_hwPowerDown);
 #endif
-
+// modify by vanzo qingzhan end
 #ifdef CONFIG_COMPAT
 
 static int compat_get_acdk_sensor_getinfo_struct(COMPAT_ACDK_SENSOR_GETINFO_STRUCT __user *data32,
