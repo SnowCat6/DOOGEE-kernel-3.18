@@ -146,7 +146,11 @@ static imgsensor_info_struct imgsensor_info = {
 	.sensor_interface_type = SENSOR_INTERFACE_TYPE_MIPI,
 	.mipi_sensor_type = MIPI_OPHY_NCSI2, //0,MIPI_OPHY_NCSI2;  1,MIPI_OPHY_CSI2
 	.mipi_settle_delay_mode = MIPI_SETTLEDELAY_AUTO,//0,MIPI_SETTLEDELAY_AUTO; 1,MIPI_SETTLEDELAY_MANNUAL
+#ifdef VANZO_CAM_S5K5E2_RATION_180	
+	.sensor_output_dataformat = SENSOR_OUTPUT_FORMAT_RAW_Gb,
+#else
 	.sensor_output_dataformat = SENSOR_OUTPUT_FORMAT_RAW_Gr,
+#endif
 	.mclk = 24,
 	.mipi_lane_num = SENSOR_MIPI_2_LANE,
 	.i2c_addr_table = {0x20, 0x6c, 0xff},
@@ -154,7 +158,11 @@ static imgsensor_info_struct imgsensor_info = {
 
 
 static imgsensor_struct imgsensor = {
+#ifdef VANZO_CAM_S5K5E2_RATION_180	
+	.mirror = IMAGE_HV_MIRROR,			//mirrorflip information
+#else
 	.mirror = IMAGE_NORMAL,				//mirrorflip information
+#endif
 	.sensor_mode = IMGSENSOR_MODE_INIT, //IMGSENSOR_MODE enum value,record current sensor mode,such as: INIT, Preview, Capture, Video,High Speed Video, Slim Video
 	.shutter = 0x3D0,					//current shutter
 	.gain = 0x100,						//current gain
@@ -1150,8 +1158,9 @@ static kal_uint32 get_imgsensor_id(UINT32 *sensor_id)
 		spin_unlock(&imgsensor_drv_lock);
 		do {
 			*sensor_id = return_sensor_id();
-			if (*sensor_id == imgsensor_info.sensor_id) {				
+			if (*sensor_id == imgsensor_info.sensor_id || *sensor_id == 0x55a0 ) {				
 				LOG_INF("i2c write id: 0x%x, sensor id: 0x%x\n", imgsensor.i2c_write_id,*sensor_id);	  
+                *sensor_id = imgsensor_info.sensor_id;
 				return ERROR_NONE;
 			}	
 			LOG_INF("Read sensor id fail, id: 0x%x\n", *sensor_id);
@@ -1200,8 +1209,9 @@ static kal_uint32 open(void)
 		spin_unlock(&imgsensor_drv_lock);
 		do {
 			sensor_id = return_sensor_id();
-			if (sensor_id == imgsensor_info.sensor_id) {				
+			if (sensor_id == imgsensor_info.sensor_id || sensor_id == 0x55a0) {				
 				LOG_INF("i2c write id: 0x%x, sensor id: 0x%x\n", imgsensor.i2c_write_id,sensor_id);	  
+                sensor_id = imgsensor_info.sensor_id;
 				break;
 			}	
 			LOG_INF("Read sensor id fail, id: 0x%x\n", sensor_id);
