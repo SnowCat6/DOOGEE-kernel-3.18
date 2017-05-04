@@ -341,8 +341,13 @@ static void lcm_get_params(LCM_PARAMS *params)
 	params->width  = FRAME_WIDTH;
 	params->height = FRAME_HEIGHT;
 
-	params->dbi.te_mode 	= LCM_DBI_TE_MODE_DISABLED;
-	params->dsi.mode	= SYNC_EVENT_VDO_MODE;
+//	params->dbi.te_mode 	= LCM_DBI_TE_MODE_DISABLED;
+//	params->dsi.mode	= SYNC_EVENT_VDO_MODE;
+	// enable tearing-free
+	params->dbi.te_mode = LCM_DBI_TE_MODE_VSYNC_ONLY;//LCM_DBI_TE_MODE_DISABLED;
+	params->dbi.te_edge_polarity = LCM_POLARITY_RISING;
+	params->dsi.mode   = SYNC_EVENT_VDO_MODE;
+
 	params->dsi.intermediat_buffer_num = 4;
 
 

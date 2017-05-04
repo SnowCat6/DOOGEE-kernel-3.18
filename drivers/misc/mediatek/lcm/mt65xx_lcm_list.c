@@ -307,7 +307,9 @@ LCM_DRIVER* lcm_driver_list[] =
 #if defined(NT35521_DSI_6735_H)
 	&nt35521_dsi_6735_H,
 #endif
-
+#if defined(ILI9806E_HLT_HD720_DSI)
+	&ili9806e_hlt_hd720_dsi,
+#endif
 
 
 
