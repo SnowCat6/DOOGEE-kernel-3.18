@@ -189,6 +189,7 @@ typedef enum {
     SENSOR_FEATURE_GET_SENSOR_PDAF_CAPACITY,
     SENSOR_FEATURE_DEBUG_IMGSENSOR,
     SENSOR_FEATURE_SET_HDR_SHUTTER,
+    SENSOR_FEATURE_SET_ISO,
     SENSOR_FEATURE_MAX
 } ACDK_SENSOR_FEATURE_ENUM;
 
@@ -687,6 +688,14 @@ typedef struct
     MUINT32 ABS_GAIN_B;
     MUINT32 ABS_GAIN_GB;
 } SET_SENSOR_AWB_GAIN, *PSET_SENSOR_AWB_GAIN;
+
+typedef struct
+{
+    MUINT32 SENSOR_MODE;
+    MUINT32 ISO;
+
+} SET_SENSOR_ISO, *PSET_SENSOR_ISO;
+
 typedef struct
 {
     MUINT32 i4OffsetX;      /* start offset of first PD block */
@@ -1028,6 +1037,10 @@ typedef struct {
     MUINT32 EffectDelay;
     MUINT32 AwbDelay;
     MUINT32 AFSwitchDelayFrame;
+    MUINT32 EvDelay;
+    MUINT32 SatDelay;
+    MUINT32 BrightDelay;
+    MUINT32 ContrastDelay;
 } SENSOR_DELAY_INFO_STRUCT, *PSENSOR_DELAY_INFO_STRUCT;
 
 typedef struct {
