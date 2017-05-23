@@ -82,4 +82,13 @@ config TPD_CUSTOM_CALIBRATION
 
 	To compile this dirver as a module, choose M here: the
 	module will be called.
+
+config HCT_TP_GESTRUE
+	bool "CONFIG_HCT_TP_GESTRUE"
+	default n
+
+config TPD_CLOSE_POWER_IN_SLEEP
+	bool "CONFIG_TPD_CLOSE_POWER_IN_SLEEP"
+	default n
+
 endif

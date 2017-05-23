@@ -2,6 +2,10 @@
 
 #include "accdet.h"
 
+#ifdef CONFIG_HCT_TP_GESTRUE
+#include "ft_gesture_lib.h"
+#endif
+
 #ifdef FTS_GESTRUE
 #define GESTURE_LEFT								0x20
 #define GESTURE_RIGHT								0x21
@@ -55,7 +59,9 @@ extern struct tpd_device *tpd;
 
 int fts_Gesture_init(struct input_dev *input_dev)
 {
-        //init_para(480,854,60,0,0);
+#ifdef CONFIG_HCT_TP_GESTRUE
+	init_para(480,854,60,0,0);
+#endif
 	input_set_capability(input_dev, EV_KEY, KEY_POWER);
 	input_set_capability(input_dev, EV_KEY, KEY_GESTURE_U); 
 	input_set_capability(input_dev, EV_KEY, KEY_GESTURE_UP); 
@@ -213,11 +219,12 @@ static int ft5x0x_read_Touchdata(struct i2c_client* i2c_client)
 		printk( "%s read touchdata failed.\n", __func__);
 		return ret;
 	}
-
-//	gestrue_id = fetch_object_sample(buf, pointnum);
-//	fts_check_gesture(tpd->dev, gestrue_id);
-//	printk( "%d read gestrue_id.\n", gestrue_id);
-
+#ifdef CONFIG_HCT_TP_GESTRUE
+	gestrue_id = fetch_object_sample(buf, pointnum);
+	printk( "%d read gestrue_id.\n", gestrue_id);
+	fts_check_gesture(tpd->dev, gestrue_id);
+#endif
+#if 0
 	for(i = 0;i < pointnum;i++)
 	{
 		coordinate_x[i] =  (((s16) buf[0 + (4 * i)]) & 0x0F) <<
@@ -226,6 +233,7 @@ static int ft5x0x_read_Touchdata(struct i2c_client* i2c_client)
 		    8 | (((s16) buf[3 + (4 * i)]) & 0xFF);
 		printk( "Gesture touch pint x,y=%d,%d\n", coordinate_x[i], coordinate_y[i]);
 	}
+#endif
 	return -1;
 }
 

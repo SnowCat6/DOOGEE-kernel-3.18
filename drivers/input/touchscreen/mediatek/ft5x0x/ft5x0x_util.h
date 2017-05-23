@@ -169,7 +169,7 @@ static int touch_event_handler(void *unused)
 		tpd_flag = 0;
 		set_current_state(TASK_RUNNING);
 
-#ifdef FTS_GESTRUE
+#ifdef CONFIG_HCT_TP_GESTRUE
 		if (touch_getsure_event_handler(i2c_client)) continue;
 #endif
 
@@ -221,7 +221,7 @@ static void tpd_irq_registration(struct i2c_client *client)
 						IRQF_TRIGGER_FALLING, TPD_DEVICE, NULL);
 	}
 
-#ifdef FTS_GESTRUE
+#ifdef CONFIG_HCT_TP_GESTRUE
 	fts_Gesture_init(tpd->dev);
 #endif
 

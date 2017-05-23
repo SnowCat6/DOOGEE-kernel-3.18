@@ -13,14 +13,14 @@
 
 #include "tpd.h"
 #include "ft5x0x_i2c.h"
-#include "ft5x0x_util.h"
 
-#define FTS_GESTRUE
 //#define TPD_CLOSE_POWER_IN_SLEEP
 
-#ifdef FTS_GESTRUE
+#if !defined(CONFIG_TPD_CLOSE_POWER_IN_SLEEP) || defined(CONFIG_HCT_TP_GESTRUE)
 #include "ft5x0x_getsure.h"
 #endif
+
+#include "ft5x0x_util.h"
 
 extern struct tpd_device *tpd;
 struct i2c_client *i2c_client = NULL;
