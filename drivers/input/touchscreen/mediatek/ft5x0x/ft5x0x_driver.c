@@ -119,7 +119,7 @@ static void tpd_suspend(struct device *h)
 
 static struct device_attribute *ft5x0x_attrs[] = {
 
-#ifdef FTS_GESTRUE
+#ifdef CONFIG_HCT_TP_GESTRUE
 	 &dev_attr_tpgesture,
 	 &dev_attr_tpgesture_status,
 #endif
