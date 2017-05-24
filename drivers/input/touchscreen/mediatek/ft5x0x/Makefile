@@ -10,5 +10,9 @@ ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/accdet/$(MTK_PLATFORM)/
 
 obj-y	+= ft5x0x_driver.o
-obj-$(CONFIG_HCT_TP_GESTRUE)   += 32bit/ft_gesture_lib.a
+ifneq ($(CONFIG_COMPAT),y)
+obj-$(CONFIG_HCT_TP_GESTRUE)   += lib/ft_gesture_32bit_lib_v1.0_20140820.a
+else
+obj-$(CONFIG_HCT_TP_GESTRUE)   += lib/ft_gesture_64bit_lib_v1.0_20140820.a
+endif
 
