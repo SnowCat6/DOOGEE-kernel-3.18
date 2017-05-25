@@ -56,9 +56,6 @@ static char tpgesture_status_value[5] = {};
 static char tpgesture_status	= 1;
 static int  g_call_state 	= 0;
 
-extern struct i2c_client *i2c_client;
-extern struct tpd_device *tpd;
-
 static struct gesture_item gesture_array[] = 
 {
 	{GESTURE_LEFT,	KEY_GESTURE_LEFT,	"LEFT"},
@@ -102,21 +99,21 @@ static void fts_check_gesture(struct input_dev *input_dev,int gesture_id)
 	printk("fts gesture_id==0x%x\n ", gesture_id);
 	*tpgesture_value = 0;
 
-	while(items->gesture_id)
+	for(;items->gesture_id;++items)
 	{
-		if (items->gesture_id == gesture_id){
-			sprintf(tpgesture_value, items->name);
-	                input_report_key(input_dev, items->action_id, 1);
-	                input_sync(input_dev);
-	                input_report_key(input_dev, items->action_id, 0);
-	                input_sync(input_dev);
-			break;
-		}
-		items++;
+		if (items->gesture_id != gesture_id) continue;
+
+		sprintf(tpgesture_value, items->name);
+                input_report_key(input_dev, items->action_id, 1);
+                input_sync(input_dev);
+                input_report_key(input_dev, items->action_id, 0);
+                input_sync(input_dev);
+
+		break;
 	}
 }
 
-static int ft5x0x_read_Touchdata(struct i2c_client* i2c_client)
+static int ft5x0x_read_Touchdata(struct input_dev *input_dev, struct i2c_client* i2c_client)
 {
 	unsigned char buf[FTS_GESTRUE_POINTS * 4] = { 0 };
 	int ret = -1;
@@ -137,7 +134,7 @@ static int ft5x0x_read_Touchdata(struct i2c_client* i2c_client)
 	{
 // pass dblclick
 		gestrue_id =  buf[0];
-		fts_check_gesture(tpd->dev, gestrue_id);
+		fts_check_gesture(input_dev, gestrue_id);
 		return -1;
 	}
 
@@ -152,7 +149,7 @@ static int ft5x0x_read_Touchdata(struct i2c_client* i2c_client)
 	}
 #ifdef CONFIG_HCT_TP_GESTRUE
 	gestrue_id = fetch_object_sample(buf, pointnum);
-	fts_check_gesture(tpd->dev, gestrue_id);
+	fts_check_gesture(input_dev, gestrue_id);
 #endif
 #if 0
 	for(i = 0;i < pointnum;i++)
@@ -167,14 +164,14 @@ static int ft5x0x_read_Touchdata(struct i2c_client* i2c_client)
 	return -1;
 }
 
- static int touch_getsure_event_handler(struct i2c_client* i2c_client)
+ static int touch_getsure_event_handler(struct input_dev *input_dev, struct i2c_client* i2c_client)
 {
  	u8 state = 0;
 	fts_read_reg(i2c_client, 0xd0, &state);
 	printk("%s lsm--state=%x .\n",__func__,state);
 	if(state !=1) return false;
 
-	ft5x0x_read_Touchdata(i2c_client);
+	ft5x0x_read_Touchdata(input_dev, i2c_client);
 	return true;
 }
 
