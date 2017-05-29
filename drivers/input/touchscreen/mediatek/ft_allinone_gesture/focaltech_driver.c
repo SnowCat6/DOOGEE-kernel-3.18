@@ -709,7 +709,7 @@ extern void tpgesture_hander();
 static void check_gesture(int gesture_id)
 {	
     printk("kaka gesture_id==0x%x\n ",gesture_id);
-    
+
 	switch(gesture_id)
 	{
 		case GESTURE_DOUBLECLICK:

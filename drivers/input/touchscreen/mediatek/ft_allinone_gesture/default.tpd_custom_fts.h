@@ -58,7 +58,7 @@ struct Upgrade_Info {
 
 /**********************Custom define begin**********************************************/
 #if defined(CONFIG_HCT_TP_GESTRUE)
-//#define FTS_GESTRUE
+#define FTS_GESTRUE
 #endif
 
 //#define TPD_PROXIMITY

@@ -68,12 +68,15 @@ static u8 kpd_slide_state = !KPD_SLIDE_POLARITY;
 #endif
 
 #ifdef CONFIG_HCT_TP_GESTRUE
-#define TP_GESTURE_KEY                                 KEY_PROG3
+#define TP_GESTURE_KEY	KEY_PROG3
 extern void hct_tpd_suspend(void);
 void tpgesture_hander()
 {
+//mt_power_off();
        printk("tpgesture_handler report key\n");
+
        input_report_key(kpd_input_dev, TP_GESTURE_KEY, 1);
+       input_sync(kpd_input_dev);
        input_report_key(kpd_input_dev, TP_GESTURE_KEY, 0);
        input_sync(kpd_input_dev);
        hct_tpd_suspend();
@@ -896,6 +899,9 @@ static int kpd_pdrv_probe(struct platform_device *pdev)
 	__set_bit(KPD_PMIC_RSTKEY_MAP, kpd_input_dev->keybit);
 #endif
 
+#ifdef CONFIG_HCT_TP_GESTRUE
+    __set_bit(TP_GESTURE_KEY, kpd_input_dev->keybit);
+#endif
 
 #ifdef CONFIG_TOUCHSCREEN_PREVENT_SLEEP
 #ifdef CONFIG_TOUCHSCREEN_SWEEP2WAKE
