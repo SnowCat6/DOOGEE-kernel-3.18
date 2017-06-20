@@ -1144,43 +1144,10 @@ static int fts_read_Gestruedata(void)
     }
 
     /* FW */
-     if (fts_updateinfo_curr.CHIP_ID==0x54)
-     {
-     		 gestrue_id = buf[0];
-		 pointnum = (short)(buf[1]) & 0xff;
-	 	 buf[0] = 0xd3;
-	 
-	 	 if((pointnum * 4 + 8)<255)
-	 	 {
-	 	    	 ret = fts_i2c_Read(i2c_client, buf, 1, buf, (pointnum * 4 + 8));
-	 	 }
-	 	 else
-	 	 {
-	 	        ret = fts_i2c_Read(i2c_client, buf, 1, buf, 255);
-	 	        ret = fts_i2c_Read(i2c_client, buf, 0, buf+255, (pointnum * 4 + 8) -255);
-	 	 }
-	 	 if (ret < 0)
-	 	 {
-	 	       printk( "%s read touchdata failed.\n", __func__);
-	 	       return ret;
-	 	 }
-        	 check_gesture(gestrue_id);
-		 for(i = 0;i < pointnum;i++)
-	        {
-	        	coordinate_x[i] =  (((s16) buf[0 + (4 * i)]) & 0x0F) <<
-	            	8 | (((s16) buf[1 + (4 * i)])& 0xFF);
-	        	coordinate_y[i] = (((s16) buf[2 + (4 * i)]) & 0x0F) <<
-	            	8 | (((s16) buf[3 + (4 * i)]) & 0xFF);
-	   	 }
-        	 return -1;
-     }
-
-    if (0x24 == buf[0])
-
+     if(buf[0]!=0xfe)
     {
-        gestrue_id = 0x24;
+        gestrue_id =  buf[0];
         check_gesture(gestrue_id);
-		printk( "tpd %d check_gesture gestrue_id.\n", gestrue_id);
         return -1;
     }
 	
@@ -1188,7 +1155,7 @@ static int fts_read_Gestruedata(void)
     buf[0] = 0xd3;
     if((pointnum * 4 + 8)<255)
     {
-    	ret = fts_i2c_Read(i2c_client, buf, 1, buf, (pointnum * 4 + 8));
+    ret = fts_i2c_Read(i2c_client, buf, 1, buf, (pointnum * 4 + 2 + 6));
     }
     else
     {
@@ -1242,7 +1209,7 @@ static int fts_read_Gestruedata(void)
 		 tpd_flag = 0;
 			 
 		 set_current_state(TASK_RUNNING);
-#if 0
+
 	 	 #ifdef FTS_GESTRUE
 			i2c_smbus_read_i2c_block_data(i2c_client, 0xd0, 1, &state);
 			//printk("tpd fts_read_Gestruedata state=%d\n",state);
@@ -1303,7 +1270,7 @@ static int fts_read_Gestruedata(void)
 		}
 		#else
 #endif
-#endif
+
 		{
 			if (tpd_touchinfo(&cinfo, &pinfo)) 
 			{
@@ -1716,15 +1683,15 @@ static void tpd_suspend( struct early_suspend *h )
 	if(TP_gesture_Switch)
 	{
 		fts_write_reg(i2c_client, 0xd0, 0x01);
-		if (fts_updateinfo_curr.CHIP_ID==0x54)
-		{
+//		if (fts_updateinfo_curr.CHIP_ID==0x54)
+//		{
 			fts_write_reg(i2c_client, 0xd1, 0xff);
 			fts_write_reg(i2c_client, 0xd2, 0xff);
 			fts_write_reg(i2c_client, 0xd5, 0xff);
 			fts_write_reg(i2c_client, 0xd6, 0xff);
 			fts_write_reg(i2c_client, 0xd7, 0xff);
 			fts_write_reg(i2c_client, 0xd8, 0xff);
-		}
+//		}
 	return;
 	}	
 #endif

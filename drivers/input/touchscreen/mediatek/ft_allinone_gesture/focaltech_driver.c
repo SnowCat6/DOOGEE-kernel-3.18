@@ -813,8 +813,7 @@ static int ft5x0x_read_Touchdata(void)
     else
     {
          ret = fts_i2c_Read(i2c_client, buf, 1, buf, 255);
-          ret = fts_i2c_Read(i2c_client, buf, 0, buf+255, (pointnum * 4 + 2 +6)-255);
-
+         ret = fts_i2c_Read(i2c_client, buf, 0, buf+255, (pointnum * 4 + 8) -255);
     }
     if (ret < 0)
     {
