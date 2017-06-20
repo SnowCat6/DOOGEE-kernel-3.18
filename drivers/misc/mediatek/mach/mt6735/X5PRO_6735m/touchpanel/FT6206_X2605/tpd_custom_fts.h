@@ -186,6 +186,9 @@ static char tp_modules_name[][MODULE_MAX_LEN] ={
 	[7]="unkown",
 	[8]="unkown",
 };
+#if defined(CONFIG_HCT_TP_GESTRUE)
+#define FTS_GESTRUE
+#endif
 //#define FTS_GESTRUE
 //#define TPD_AUTO_UPGRADE				//if need upgrade CTP FW when POWER ON,pls enable this MACRO
 #ifdef FTS_GESTRUE

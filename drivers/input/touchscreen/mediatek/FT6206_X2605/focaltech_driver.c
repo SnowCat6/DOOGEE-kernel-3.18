@@ -39,6 +39,12 @@
 #include "focaltech_ex_fun.h"
 #endif
 
+#if defined(CONFIG_HCT_TP_GESTRUE)
+#define GTP_GESTURE_WAKEUP    1
+#else
+#define GTP_GESTURE_WAKEUP    0
+#endif
+
 
 #ifdef TPD_PROXIMITY
 #include <linux/hwmsensor.h>

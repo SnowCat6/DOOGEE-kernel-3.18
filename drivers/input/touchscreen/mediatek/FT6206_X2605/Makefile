@@ -8,3 +8,10 @@ ccflags-y += -I$(srctree)/drivers/input/touchscreen/mediatek/
 obj-y	+=  focaltech_ctl.o
 obj-y	+=  focaltech_driver.o
 obj-y	+=  focaltech_ex_fun.o
+
+ifneq ($(CONFIG_COMPAT),y)
+obj-$(CONFIG_HCT_TP_GESTRUE)   += ft_gesture_32bit_lib_v1.0_20140820.a
+else
+obj-$(CONFIG_HCT_TP_GESTRUE)   += ft_gesture_64bit_lib_v1.0_20140820.a
+endif
+
