@@ -74,9 +74,35 @@ static struct gesture_item gesture_array[] =
 	{0}
 };
 
+static ssize_t show_tpgesture_value(struct device *dev, struct device_attribute *attr, char *buf)
+{
+	 printk("show tp gesture value is %s \n", tpgesture_value);
+	 return sprintf(buf, "%s\n", tpgesture_value);
+}
+ 
+static ssize_t show_tpgesture_status_value(struct device *dev, struct device_attribute *attr, char *buf)
+{
+	 printk("show tp gesture status is %s\n", tpgesture_status_value);
+	 return sprintf(buf, "%s\n", tpgesture_status_value);
+}
+ 
+static ssize_t store_tpgesture_status_value(struct device* dev, struct device_attribute *attr,
+					const char *buf, size_t count)
+{
+	tpgesture_status = strncmp(buf, "on", 2)?0:1;
+	sprintf(tpgesture_status_value, tpgesture_status?"on":"off");
+ 
+	 return count;
+}
+
+// sys/devices/bus/bus\:touch@/tpgesture
+static DEVICE_ATTR(tpgesture, 0664, show_tpgesture_value, NULL);
+//	0666
+// sys/devices/bus/bus\:touch@/tpgesture_status
+static DEVICE_ATTR(tpgesture_status, 0664, show_tpgesture_status_value, store_tpgesture_status_value);
+
 int fts_Gesture_init(struct input_dev *input_dev)
 {
-
 #ifdef CONFIG_HCT_TP_GESTRUE
 	struct gesture_item* items = gesture_array;
 
@@ -88,6 +114,8 @@ int fts_Gesture_init(struct input_dev *input_dev)
 		__set_bit(items->action_id, input_dev->keybit);
 		items++;
 	}
+//	device_create_file(&input_dev->dev, &dev_attr_tpgesture);
+//	device_create_file(&input_dev->dev, &dev_attr_tpgesture_status);
 #endif
 	return 0;
 }
@@ -108,6 +136,9 @@ static void fts_check_gesture(struct input_dev *input_dev,int gesture_id)
                 input_sync(input_dev);
                 input_report_key(input_dev, items->action_id, 0);
                 input_sync(input_dev);
+
+//		device_remove_file(&input_dev->dev, &dev_attr_tpgesture);
+//		device_create_file(&input_dev->dev, &dev_attr_tpgesture);
 
 		break;
 	}
@@ -206,40 +237,4 @@ static bool tpd_getsure_resume(struct i2c_client* i2c_client)
 
 	return true;
  }
-
-static ssize_t show_tpgesture_value(struct device *dev, struct device_attribute *attr, char *buf)
-{
-	 printk("show tp gesture value is %s \n", tpgesture_value);
-	 return sprintf(buf, "%s\n", tpgesture_value);
-}
- 
-static ssize_t show_tpgesture_status_value(struct device *dev, struct device_attribute *attr, char *buf)
-{
-	 printk("show tp gesture status is %s\n", tpgesture_status_value);
-	 return sprintf(buf, "%s\n", tpgesture_status_value);
-}
- 
-static ssize_t store_tpgesture_status_value(struct device* dev, struct device_attribute *attr,
-					const char *buf, size_t count)
-{
-	 if(!strncmp(buf, "on", 2))
-	 {
-		 sprintf(tpgesture_status_value,"on");
-		 tpgesture_status = 1;//status --- on
-	 }
-	 else
-	 {
-		 sprintf(tpgesture_status_value,"off");
-		 tpgesture_status = 0;//status --- off
-	 }
- 
-	 return count;
-}
-
-// sys/devices/bus/bus\:touch@/tpgesture
-static DEVICE_ATTR(tpgesture, 0664, show_tpgesture_value, NULL);
-//	0666
-// sys/devices/bus/bus\:touch@/tpgesture_status
-static DEVICE_ATTR(tpgesture_status, 0664, show_tpgesture_status_value, store_tpgesture_status_value);
-
 
