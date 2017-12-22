@@ -3,7 +3,6 @@
 #include <linux/i2c.h>
 #include <linux/sched.h>
 #include <linux/kthread.h>
-#include <linux/rtpm_prio.h>
 #include <linux/wait.h>
 #include <linux/delay.h>
 
@@ -14,14 +13,14 @@
 
 #include "tpd.h"
 #include "ft5x0x_i2c.h"
-#include "ft5x0x_util.h"
 
-#define FTS_GESTRUE
 //#define TPD_CLOSE_POWER_IN_SLEEP
 
-#ifdef FTS_GESTRUE
+#if !defined(CONFIG_TPD_CLOSE_POWER_IN_SLEEP) || defined(CONFIG_HCT_TP_GESTRUE)
 #include "ft5x0x_getsure.h"
 #endif
+
+#include "ft5x0x_util.h"
 
 extern struct tpd_device *tpd;
 struct i2c_client *i2c_client = NULL;
@@ -37,7 +36,6 @@ static int tpd_probe(struct i2c_client *client, const struct i2c_device_id *id)
 	i2c_client = client;
 	if (tpd_power_on(client) == 0)
 		return -1;
-
 	tpd_irq_registration(client);
 	// Extern variable MTK touch driver
     	tpd_load_status = 1;
@@ -121,7 +119,7 @@ static void tpd_suspend(struct device *h)
 
 static struct device_attribute *ft5x0x_attrs[] = {
 
-#ifdef FTS_GESTRUE
+#ifdef CONFIG_HCT_TP_GESTRUE
 	 &dev_attr_tpgesture,
 	 &dev_attr_tpgesture_status,
 #endif
