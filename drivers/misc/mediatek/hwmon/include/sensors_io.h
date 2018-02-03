@@ -77,6 +77,35 @@ struct SENSOR_DATA {
 
 #endif
 
+/* memsic add start */
+#define GSENSOR_IOCTL_GET_DELAY				_IOR(GSENSOR, 0x10, int)
+#define GSENSOR_IOCTL_GET_STATUS			_IOR(GSENSOR, 0x11, int)
+#define GSENSOR_IOCTL_GET_DATA				_IOR(GSENSOR, 0x12, int[3])
+#define GSENSOR_IOCTL_SET_DATA				_IOW(GSENSOR, 0x13, int[3])
+#define GSENSOR_IOCTL_GET_TEMP				_IOR(GSENSOR, 0x14, int)
+#define GSENSOR_IOCTL_GET_DANT				_IOR(GSENSOR, 0x15, int[4])
+#define GSENSOR_IOCTL_SET_TEST1				_IOW(GSENSOR, 0x16, int)
+#define GSENSOR_IOCTL_SET_TEST2				_IOW(GSENSOR, 0x17, int)
+#define GSENSOR_IOCTL_SET_TEST3				_IOW(GSENSOR, 0x18, int)
+#define GSENSOR_IOCTL_READ_REG				_IOR(GSENSOR, 0x19, int)
+#define GSENSOR_IOCTL_GET_LAYOUT            		_IOR(GSENSOR, 0x21, int)
+#define GSENSOR_IOCTL_WRITE_REG				_IOW(GSENSOR, 0x1A, int)
+
+#ifdef CONFIG_COMPAT
+#define COMPAT_GSENSOR_IOCTL_GET_DELAY				_IOR(GSENSOR, 0x10, compat_int_t)
+#define COMPAT_GSENSOR_IOCTL_GET_STATUS				_IOR(GSENSOR, 0x11, compat_int_t)
+#define COMPAT_GSENSOR_IOCTL_GET_DATA				_IOR(GSENSOR, 0x12, int[3])
+#define COMPAT_GSENSOR_IOCTL_SET_DATA				_IOW(GSENSOR, 0x13, int[3])
+#define COMPAT_GSENSOR_IOCTL_GET_TEMP				_IOR(GSENSOR, 0x14, compat_int_t)
+#define COMPAT_GSENSOR_IOCTL_GET_DANT				_IOR(GSENSOR, 0x15, int[4])
+#define COMPAT_GSENSOR_IOCTL_SET_TEST1				_IOW(GSENSOR, 0x16, compat_int_t)
+#define COMPAT_GSENSOR_IOCTL_SET_TEST2				_IOW(GSENSOR, 0x17, compat_int_t)
+#define COMPAT_GSENSOR_IOCTL_SET_TEST3				_IOW(GSENSOR, 0x18, compat_int_t)
+#define COMPAT_GSENSOR_IOCTL_READ_REG				_IOR(GSENSOR, 0x19, compat_int_t)
+#define COMPAT_GSENSOR_IOCTL_GET_LAYOUT            		_IOR(GSENSOR, 0x21, compat_int_t)
+#define COMPAT_GSENSOR_IOCTL_WRITE_REG				_IOW(GSENSOR, 0x1A, compat_int_t)
+#endif
+/* memsic add end */
 
 /* IOCTLs for Msensor misc. device library */
 #define MSENSOR						   0x83
