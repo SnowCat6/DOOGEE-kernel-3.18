@@ -28,17 +28,18 @@
 
 
 #include	<linux/ioctl.h>	/* For IOCTL macros */
+#include	<linux/input.h>
 
 
 
 /************************************************/
 /* 	Accelerometer defines section	 	*/
 /************************************************/
-#define MXC400X_DEV_NAME		"mxc400x"
-extern struct acc_hw* mxc400x_get_cust_acc_hw(void);
+#define MXC400X_DEV_NAME		"MXC400X"
 
-#define MXC400X_I2C_ADDR     	0x15
-#define MXC400X_ID				0x02 //0x02	
+#define MXC400X_I2C_ADDR		0x15
+#define MXC400X_ID_1			0x02
+#define MXC400X_ID_2			0x03
 
 /* MXC400X register address */
 #define MXC400X_REG_X			0x03
@@ -47,11 +48,7 @@ extern struct acc_hw* mxc400x_get_cust_acc_hw(void);
 #define MXC400X_REG_TEMP        0x09
 #define MXC400X_REG_CTRL		0x0D
 #define MXC400X_REG_ID          0x0E
-//#define MXC400X_REG_FAC         0x0E
-//#define MXC400X_REG_FSRE        0x17
-#define MXC400X_REG_TEST1        0x13
-#define MXC400X_REG_TEST2        0x14
-#define MXC400X_REG_TEST3        0x15 
+
 
 
 /*para setting*/
@@ -70,28 +67,13 @@ extern struct acc_hw* mxc400x_get_cust_acc_hw(void);
 #define MXC400X_SUCCESS						0
 #define MXC400X_ERR_I2C						-1
 #define MXC400X_ERR_STATUS					-3
-#define MXC400X_ERR_SETUP_FAILURE			-4
-#define MXC400X_ERR_GETGSENSORDATA			-5
-#define MXC400X_ERR_IDENTIFICATION			-6
+#define MXC400X_ERR_SETUP_FAILURE	-4
+#define MXC400X_ERR_GETGSENSORDATA	-5
+#define MXC400X_ERR_IDENTIFICATION	-6
 
-#define MXC400X_BUFSIZE				256
+#define MXC400X_BUFSIZE			256
+#define MXC400X_STABLE_DELAY	10
 
-#if defined(C2_PROJ)
-#define ACC_USE_SYS_I2C
-#endif
-
-#ifdef	__KERNEL__
-struct mxc400x_acc_platform_data {
-	int poll_interval;
-	int min_interval;
-
-	int (*init)(void);
-	void (*exit)(void);
-	int (*power_on)(void);
-	int (*power_off)(void);
-
-};
-#endif	/* __KERNEL__ */
 
 #endif /* __MXC400X_H__ */
 

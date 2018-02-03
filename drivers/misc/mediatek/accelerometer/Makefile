@@ -36,5 +36,5 @@ obj-$(CONFIG_MTK_BMC156_ACC)   +=  bmc156_acc/
 obj-$(CONFIG_MTK_MMA8653)   +=  mma8653/
 obj-$(CONFIG_MTK_ACCEL_RT3000)   +=  rt3000/
 obj-$(CONFIG_MTK_LSM6DS3HG)   +=  lsm6ds3hg/
-obj-$(CONFIG_MTK_MXC400X-NEW)   +=  mxc400x-new/
+obj-$(CONFIG_MTK_MXC400X_NEW)   +=  mxc400x-new/
 endif
