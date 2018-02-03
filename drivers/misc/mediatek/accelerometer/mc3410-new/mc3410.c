@@ -102,13 +102,13 @@
 
 
 /* Maintain  cust info here */
-struct acc_hw accel_cust;
-static struct acc_hw *hw = &accel_cust;
+struct acc_hw accel_cust_mc3410;
+static struct acc_hw *hw = &accel_cust_mc3410;
 
 /* For  driver get cust info */
 struct acc_hw *get_cust_acc(void)
 {
-	return &accel_cust;
+	return &accel_cust_mc3410;
 }
 
 static int g_samedataCounter;/*count the same data number*/

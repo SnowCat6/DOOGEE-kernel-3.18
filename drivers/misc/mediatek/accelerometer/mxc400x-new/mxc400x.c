@@ -71,8 +71,8 @@
 #define  USE_DELAY
 
 static s16 cali_sensor_data;
-struct acc_hw accel_cust;
-struct acc_hw *hw = &accel_cust;
+struct acc_hw accel_cust_mxc400x;
+struct acc_hw *hw = &accel_cust_mxc400x;
 #ifdef USE_DELAY
 static int delay_state = 0;
 #endif
