@@ -31,6 +31,7 @@ extern LCM_DRIVER hct_otm1284a_dsi_vdo_hd_boe;
 extern LCM_DRIVER hct_otm1285a_dsi_vdo_hd_boe_3lane;
 extern LCM_DRIVER nt35521_dsi_6735_H;
 extern LCM_DRIVER ili9806e_hlt_hd720_dsi;
+extern LCM_DRIVER ili9881_hds_hd720_5p0_h1_t592_otd;
 
 
 extern LCM_DRIVER otm1282a_hd720_dsi_vdo_60hz_lcm_drv;
