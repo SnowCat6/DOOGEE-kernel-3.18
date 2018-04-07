@@ -679,7 +679,7 @@
 
 	usb_mode1_iddig: iddig_irq_init {
 		pins_cmd_dat {
-			pins = <PINMUX_GPIO9__FUNC_USB_IDDIG>;
+			pins = <PINMUX_GPIO9__FUNC_EINT9>;
 			slew-rate = <0>;
 			bias-pull-up = <00>;
 		};
