@@ -132,207 +132,6 @@ static unsigned int lcm_esd_test = FALSE;      ///only for ESD test
     unsigned char para_list[64];
 };
 
-
-static struct LCM_setting_table lcm_initialization_setting[] = {
-    
-    /*
-    Note :
-
-    Data ID will depends on the following rule.
-    
-        count of parameters > 1 => Data ID = 0x39
-        count of parameters = 1 => Data ID = 0x15
-        count of parameters = 0 => Data ID = 0x05
-
-    Structure Format :
-
-    {DCS command, count of parameters, {parameter list}}
-    {REGFLAG_DELAY, milliseconds of time, {}},
-
-    ...
-
-    Setting ending by predefined flag
-    
-    {REGFLAG_END_OF_TABLE, 0x00, {}}
-    */
-{0xFF,3,{0x98,0x81,0x07}},   //CMD_Page 7
-{0x03,1,{0x20 }},  //GIP_1
-{0x04,1,{0x06 }},
-{0x05,1,{0x00 }},
-{0x06,1,{0x1  }},
-{0x07,1,{0x00 }},
-{0x08,1,{0x00 }},
-{0x09,1,{0x00 }},
-{0x0A,1,{0x1  }},
-{0x0B,1,{0x2F }},
-{0x0C,1,{0x00 }},
-{0x0D,1,{0x00 }},
-{0x0E,1,{0x00 }},
-{0x0F,1,{0x00 }},
-{0x10,1,{0x44 }},
-{0x11,1,{0x02 }},
-{0x12,1,{0x03 }},
-{0x13,1,{0x00 }},
-{0x14,1,{0x00 }},
-{0x15,1,{0x00 }},
-{0x16,1,{0x2F }},
-{0x17,1,{0x2F }},
-{0x18,1,{0x00 }},
-{0x19,1,{0x00 }},
-{0x1A,1,{0x00 }},
-{0x1B,1,{0x50 }},
-{0x1C,1,{0xBB }},
-{0x1D,1,{0x0C }},
-{0x1E,1,{0x00 }},
-{0x1F,1,{0x00 }},
-{0x20,1,{0x00 }},
-{0x21,1,{0x00 }},
-{0x22,1,{0x00 }},
-{0x23,1,{0x00 }},
-{0x24,1,{0x30 }},
-{0x25,1,{0x00 }},
-{0x26,1,{0x00 }},
-{0x27,1,{0x03 }},
-{0x30,1,{0x1  }},//GIP_2
-{0x31,1,{0x23 }},
-{0x32,1,{0x45 }},
-{0x33,1,{0x67 }},
-{0x34,1,{0x89 }},
-{0x35,1,{0xAB }},
-{0x36,1,{0x1  }},
-{0x37,1,{0x23 }},
-{0x38,1,{0x45 }},
-{0x39,1,{0x67 }},
-{0x3A,1,{0x89 }},
-{0x3B,1,{0xAB }},
-{0x3C,1,{0xCD }},
-{0x3D,1,{0xEF }},
-
-{0x50,1,{0x11 }},  //GIP_3
-{0x51,1,{0x06 }},
-{0x52,1,{0x0C }},
-{0x53,1,{0x0D }},
-{0x54,1,{0x0E }},
-{0x55,1,{0x0F }},
-{0x56,1,{0x02 }},
-{0x57,1,{0x02 }},
-{0x58,1,{0x02 }},
-{0x59,1,{0x02 }},
-{0x5A,1,{0x02 }},
-{0x5B,1,{0x02 }},
-{0x5C,1,{0x02 }},
-{0x5D,1,{0x02 }},
-{0x5E,1,{0x02 }},
-{0x5F,1,{0x02 }},
-{0x60,1,{0x05 }},
-{0x61,1,{0x05 }},
-{0x62,1,{0x05 }},
-{0x63,1,{0x02 }},
-{0x64,1,{0x1  }},
-{0x65,1,{0x00 }},
-{0x66,1,{0x08 }},
-{0x67,1,{0x08 }},
-{0x68,1,{0x0C }},
-{0x69,1,{0x0D }},
-{0x6A,1,{0x0E }},
-{0x6B,1,{0x0F }},
-{0x6C,1,{0x02 }},
-{0x6D,1,{0x02 }},
-{0x6E,1,{0x02 }},
-{0x6F,1,{0x02 }},
-{0x70,1,{0x02 }},
-{0x71,1,{0x02 }},
-{0x72,1,{0x02 }},
-{0x73,1,{0x02 }},
-{0x74,1,{0x02 }},
-{0x75,1,{0x02 }},
-{0x76,1,{0x05 }},
-{0x77,1,{0x05 }},
-{0x78,1,{0x05 }},
-{0x79,1,{0x02 }},
-{0x7A,1,{0x1  }},
-{0x7B,1,{0x00 }},
-{0x7C,1,{0x06 }},
-
-{0xFF,3,{0x98,0x81,0x08}},  //CMD_Page 8
-{0x76,1,{0xB4 }},       //VGH pumping ratio 3x
-{0x78,1,{0x02 }},
-{0x74,1,{0x2B }},
-{0x8E,1,{0x15 }},
-{0x40,1,{0x1  }},
-{0x84,1,{0x81 }},
-{0x72,1,{0x25 }},
-{0xE3,1,{0x45 }},
-{0x7D,1,{0xCB }},
-{0x7E,1,{0x49 }},
-{0x49,1,{0x10 }},
-{0x2F,1,{0x1  }},
-
-{0xFF,3,{0x98,0x81,0x1}},   //CMD_Page 1
-{0x22,1,{0x0A }},
-{0x53,1,{0x6F }},
-{0x55,1,{0x75 }},
-{0x50,1,{0xB9 }},
-{0x51,1,{0xBA }},
-{0x31,1,{0x00 }},
-
-{0xA0,1,{0x08 }},  //VP255 Gamma P
-{0xA1,1,{0x14 }},  //VP251   
-{0xA2,1,{0x1d }},  //VP247  
-{0xA3,1,{0x0f }},
-{0xA4,1,{0x0d }},     
-{0xA5,1,{0x1f }},
-{0xA6,1,{0x14 }},
-{0xA7,1,{0x18 }},
-{0xA8,1,{0x7d }},
-{0xA9,1,{0x1d }},
-{0xAA,1,{0x2a }},
-{0xAB,1,{0x83 }},
-{0xAC,1,{0x1d }},
-{0xAD,1,{0x1d }},
-{0xAE,1,{0x50 }},
-{0xAF,1,{0x22 }},
-{0xB0,1,{0x23 }},
-{0xB1,1,{0x28 }},
-{0xB2,1,{0x53 }},
-{0xB3,1,{0x63 }},
-{0xB7,1,{0x39 }},
-
-{0xC0,1,{0x08 }},  //VN255 GAMMA N
-{0xC1,1,{0x13 }},  //VN251
-{0xC2,1,{0x1d }},   //VN247
-{0xC3,1,{0x0e }},
-{0xC4,1,{0x0e }},
-{0xC5,1,{0x1f }},
-{0xC6,1,{0x13 }},
-{0xC7,1,{0x18 }},
-{0xC8,1,{0x7e }},
-{0xC9,1,{0x1e }},
-{0xCA,1,{0x2b }},
-{0xCB,1,{0x83 }},
-{0xCC,1,{0x1e }},
-{0xCD,1,{0x1c }},
-{0xCE,1,{0x50 }},
-{0xCF,1,{0x23 }},
-{0xD0,1,{0x29 }},
-{0xD1,1,{0x53 }},
-{0xD2,1,{0x63 }},
-{0xD3,1,{0x39 }},
-
-{0xFF,3,{0x98,0x81,0x00 }},
-
-{0x35,1,{0x00}}, //TE ON
-//{0x35}1{,         
-    {0x11,1,{0x00}},  
-    {REGFLAG_DELAY,120,{}},
-
-    {0x29,1,{0x00}},//Display ON 
-    {REGFLAG_DELAY,20,{}},  
-
-// Setting ending by predefined flag
-    {REGFLAG_END_OF_TABLE, 0x00, {}}
-};
-
 static struct LCM_setting_table lcm_sleep_out_setting[] = {
     // Sleep Out
     {0x11, 1, {0x00}},
@@ -344,7 +143,6 @@ static struct LCM_setting_table lcm_sleep_out_setting[] = {
     {REGFLAG_DELAY, 20, {}},
     {REGFLAG_END_OF_TABLE, 0x00, {}}
 };
-
 
 static struct LCM_setting_table lcm_deep_sleep_mode_in_setting[] = {
     // Display off sequence
@@ -420,58 +218,314 @@ static void lcm_get_params(LCM_PARAMS *params)
     params->height = FRAME_HEIGHT;
 
     // enable tearing-free
-    params->dbi.te_mode             = LCM_DBI_TE_MODE_DISABLED;
-    params->dbi.te_edge_polarity        = LCM_POLARITY_RISING;
-
-
+    params->dbi.te_mode             = LCM_DBI_TE_MODE_VSYNC_ONLY;
+    params->dbi.te_edge_polarity    = LCM_POLARITY_RISING;
 
     params->dsi.mode   = SYNC_EVENT_VDO_MODE;
-
-
+params->dsi.ssc_disable = 1;
+  params->dsi.clk_lp_per_line_enable = 1;
     // DSI
     /* Command mode setting */
-    params->dsi.LANE_NUM                = LCM_FOUR_LANE;
+    params->dsi.LANE_NUM                = LCM_THREE_LANE;
     //The following defined the fomat for data coming from LCD engine. 
     params->dsi.data_format.color_order = LCM_COLOR_ORDER_RGB;
     params->dsi.data_format.trans_seq   = LCM_DSI_TRANS_SEQ_MSB_FIRST; 
     params->dsi.data_format.padding     = LCM_DSI_PADDING_ON_LSB;
     params->dsi.data_format.format      = LCM_DSI_FORMAT_RGB888;
-    // Highly depends on LCD driver capability.
-    // Not support in MT6573
+
     params->dsi.packet_size=256;
+
     // Video mode setting       
-    params->dsi.intermediat_buffer_num = 2;
     params->dsi.PS=LCM_PACKED_PS_24BIT_RGB888;
-    params->dsi.vertical_sync_active                = 4;
-    params->dsi.vertical_backporch                  = 16;
-    params->dsi.vertical_frontporch                 = 15;
+    params->dsi.vertical_sync_active                = 8;
+    params->dsi.vertical_backporch                  = 24;
+    params->dsi.vertical_frontporch                 = 16;
     params->dsi.vertical_active_line                = FRAME_HEIGHT; 
     params->dsi.horizontal_sync_active              = 10;
-    params->dsi.horizontal_backporch                = 64;
-    params->dsi.horizontal_frontporch               = 64;
-    params->dsi.horizontal_blanking_pixel              = 60;
+    params->dsi.horizontal_backporch                = 60;
+    params->dsi.horizontal_frontporch               = 60;
     params->dsi.horizontal_active_pixel            = FRAME_WIDTH;
     // Bit rate calculation
-#if 0
-    params->dsi.pll_div1=1;     // div1=0,1,2,3;div1_real=1,2,4,4
-    params->dsi.pll_div2=1;     // div2=0,1,2,3;div2_real=1,2,4,4
-    params->dsi.fbk_sel=1;       // fbk_sel=0,1,2,3;fbk_sel_real=1,2,4,4
-    params->dsi.fbk_div =30;        // fref=26MHz, fvco=fref*(fbk_div+1)*2/(div1_real*div2_real)    
-#else
-    params->dsi.PLL_CLOCK=230;//227;//254;//254//247
-#endif
+  params->dsi.HS_TRAIL = 20;
+
+  params->dsi.esd_check_enable = 1;
+  params->dsi.customization_esd_check_enable = 1;
+  params->dsi.lcm_esd_check_table[0].count = 1;
+  params->dsi.lcm_esd_check_table[0].cmd = 10;
+  params->dsi.lcm_esd_check_table[0].para_list[0] = 0x9Cu;
+
+    params->dsi.PLL_CLOCK=260;
+
+/*
+  params->dsi.LANE_NUM = 3;
+  params->dsi.packet_size = 256;
+  params->dsi.vertical_sync_active = 8;
+  params->dsi.vertical_backporch = 24;
+  params->dsi.vertical_frontporch = 16;
+  params->dsi.HS_TRAIL = 20;
+  params->dsi.PLL_CLOCK = 260;
+  params->dsi.lcm_esd_check_table[0].para_list[0] = -100;
+  params->type = 2;
+  params->dsi.mode = 2;
+  params->dsi.data_format.format = 2;
+  params->dsi.PS = 2;
+  params->width = 720;
+  params->dsi.horizontal_active_pixel = 720;
+  params->height = 1280;
+  params->dsi.vertical_active_line = 1280;
+  params->dbi.te_mode = 1;
+  params->dsi.ssc_disable = 1;
+  params->dsi.clk_lp_per_line_enable = 1;
+  params->dsi.esd_check_enable = 1;
+  params->dsi.customization_esd_check_enable = 1;
+  params->dsi.lcm_esd_check_table[0].count = 1;
+  params->dbi.te_edge_polarity = 0;
+  params->dsi.data_format.color_order = 0;
+  params->dsi.data_format.trans_seq = 0;
+  params->dsi.data_format.padding = 0;
+  params->dsi.horizontal_sync_active = 10;
+  params->dsi.lcm_esd_check_table[0].cmd = 10;
+  params->dsi.horizontal_backporch = 60;
+  params->dsi.horizontal_frontporch = 60;
+*/
+}
+
+static void lcm_set_reg(int dsi_cmd, int dsi_value)
+{
+    unsigned int data_array[2];
+    data_array[0] = 0x22902;
+    data_array[1] = dsi_cmd | (dsi_value << 8);
+    dsi_set_cmdq(data_array, 2, 1);
+}
+
+static void lcm_set(int dsi_cmd)
+{
+    unsigned int data_array[1];
+    data_array[0] =  (dsi_cmd << 16) | 0x500;
+    dsi_set_cmdq(data_array, 1, 1);
 }
 
 static void lcm_init(void)
 {
+    unsigned int data_array[16];
+
     SET_RESET_PIN(1);
     MDELAY(10);
     SET_RESET_PIN(0);
-    MDELAY(20);
+    MDELAY(50);
     SET_RESET_PIN(1);
     MDELAY(120);
 
-    push_table(lcm_initialization_setting, sizeof(lcm_initialization_setting) / sizeof(struct LCM_setting_table), 1);
+  data_array[0] = 0x42902;
+  data_array[1] = 0x38198FF;
+  dsi_set_cmdq(data_array, 2, 1);
+  lcm_set_reg(1, 0);
+  lcm_set_reg(2, 0);
+  lcm_set_reg(3, 115);
+  lcm_set_reg(4, 0);
+  lcm_set_reg(5, 0);
+  lcm_set_reg(6, 10);
+  lcm_set_reg(7, 0);
+  lcm_set_reg(8, 0);
+  lcm_set_reg(9, 1);
+  lcm_set_reg(10, 0);
+  lcm_set_reg(11, 0);
+  lcm_set_reg(12, 1);
+  lcm_set_reg(13, 0);
+  lcm_set_reg(14, 0);
+  lcm_set_reg(15, 29);
+  lcm_set_reg(16, 29);
+  lcm_set_reg(17, 0);
+  lcm_set_reg(18, 0);
+  lcm_set_reg(19, 0);
+  lcm_set_reg(20, 0);
+  lcm_set_reg(21, 0);
+  lcm_set_reg(22, 0);
+  lcm_set_reg(23, 0);
+  lcm_set_reg(24, 0);
+  lcm_set_reg(25, 0);
+  lcm_set_reg(26, 0);
+  lcm_set_reg(27, 0);
+  lcm_set_reg(28, 0);
+  lcm_set_reg(29, 0);
+  lcm_set_reg(30, 64);
+  lcm_set_reg(31, 128);
+  lcm_set_reg(32, 6);
+  lcm_set_reg(33, 2);
+  lcm_set_reg(34, 0);
+  lcm_set_reg(35, 0);
+  lcm_set_reg(36, 0);
+  lcm_set_reg(37, 0);
+  lcm_set_reg(38, 0);
+  lcm_set_reg(39, 0);
+  lcm_set_reg(40, 51);
+  lcm_set_reg(41, 3);
+  lcm_set_reg(42, 0);
+  lcm_set_reg(43, 0);
+  lcm_set_reg(44, 0);
+  lcm_set_reg(45, 0);
+  lcm_set_reg(46, 0);
+  lcm_set_reg(47, 0);
+  lcm_set_reg(48, 0);
+  lcm_set_reg(49, 0);
+  lcm_set_reg(50, 0);
+  lcm_set_reg(51, 0);
+  lcm_set_reg(52, 4);
+  lcm_set_reg(53, 0);
+  lcm_set_reg(54, 0);
+  lcm_set_reg(55, 0);
+  lcm_set_reg(56, 60);
+  lcm_set_reg(57, 0);
+  lcm_set_reg(58, 64);
+  lcm_set_reg(59, 64);
+  lcm_set_reg(60, 0);
+  lcm_set_reg(61, 0);
+  lcm_set_reg(62, 0);
+  lcm_set_reg(63, 0);
+  lcm_set_reg(64, 0);
+  lcm_set_reg(65, 0);
+  lcm_set_reg(66, 0);
+  lcm_set_reg(67, 0);
+  lcm_set_reg(68, 0);
+  lcm_set_reg(80, 1);
+  lcm_set_reg(81, 35);
+  lcm_set_reg(82, 69);
+  lcm_set_reg(83, 103);
+  lcm_set_reg(84, 137);
+  lcm_set_reg(85, 171);
+  lcm_set_reg(86, 1);
+  lcm_set_reg(87, 35);
+  lcm_set_reg(88, 69);
+  lcm_set_reg(89, 103);
+  lcm_set_reg(90, 137);
+  lcm_set_reg(91, 171);
+  lcm_set_reg(92, 205);
+  lcm_set_reg(93, 239);
+  lcm_set_reg(94, 17);
+  lcm_set_reg(95, 1);
+  lcm_set_reg(96, 0);
+  lcm_set_reg(97, 21);
+  lcm_set_reg(98, 20);
+  lcm_set_reg(99, 14);
+  lcm_set_reg(100, 15);
+  lcm_set_reg(101, 12);
+  lcm_set_reg(102, 13);
+  lcm_set_reg(103, 6);
+  lcm_set_reg(104, 2);
+  lcm_set_reg(105, 7);
+  lcm_set_reg(106, 2);
+  lcm_set_reg(107, 2);
+  lcm_set_reg(108, 2);
+  lcm_set_reg(109, 2);
+  lcm_set_reg(110, 2);
+  lcm_set_reg(111, 2);
+  lcm_set_reg(112, 2);
+  lcm_set_reg(113, 2);
+  lcm_set_reg(114, 2);
+  lcm_set_reg(115, 2);
+  lcm_set_reg(116, 2);
+  lcm_set_reg(117, 1);
+  lcm_set_reg(118, 0);
+  lcm_set_reg(119, 20);
+  lcm_set_reg(120, 21);
+  lcm_set_reg(121, 14);
+  lcm_set_reg(122, 15);
+  lcm_set_reg(123, 12);
+  lcm_set_reg(124, 13);
+  lcm_set_reg(125, 6);
+  lcm_set_reg(126, 2);
+  lcm_set_reg(127, 7);
+  lcm_set_reg(128, 2);
+  lcm_set_reg(129, 2);
+  lcm_set_reg(130, 2);
+  lcm_set_reg(131, 2);
+  lcm_set_reg(132, 2);
+  lcm_set_reg(133, 2);
+  lcm_set_reg(134, 2);
+  lcm_set_reg(135, 2);
+  lcm_set_reg(136, 2);
+  lcm_set_reg(137, 2);
+  lcm_set_reg(138, 2);
+  data_array[1] = 75602175;
+  data_array[0] = 272642;
+  dsi_set_cmdq(data_array, 2, 1);
+  lcm_set_reg(0, 0);
+  lcm_set_reg(108, 21);
+  lcm_set_reg(110, 42);
+  lcm_set_reg(111, 53);
+  lcm_set_reg(58, 148);
+  lcm_set_reg(141, 20);
+  lcm_set_reg(135, 186);
+  lcm_set_reg(38, 118);
+  lcm_set_reg(178, 209);
+  lcm_set_reg(181, 6);
+  data_array[0] = 272642;
+  data_array[1] = 25270527;
+  dsi_set_cmdq(data_array, 2, 1);
+  lcm_set_reg(34, 9);
+  lcm_set_reg(49, 0);
+  lcm_set_reg(83, 150);
+  lcm_set_reg(85, 150);
+  lcm_set_reg(80, 183);
+  lcm_set_reg(81, 183);
+  lcm_set_reg(96, 34);
+  lcm_set_reg(97, 0);
+  lcm_set_reg(98, 25);
+  lcm_set_reg(99, 16);
+  lcm_set_reg(160, 8);
+  lcm_set_reg(161, 26);
+  lcm_set_reg(162, 39);
+  lcm_set_reg(163, 21);
+  lcm_set_reg(164, 23);
+  lcm_set_reg(165, 42);
+  lcm_set_reg(166, 30);
+  lcm_set_reg(167, 31);
+  lcm_set_reg(168, 139);
+  lcm_set_reg(169, 27);
+  lcm_set_reg(170, 39);
+  lcm_set_reg(171, 120);
+  lcm_set_reg(172, 24);
+  lcm_set_reg(173, 24);
+  lcm_set_reg(174, 76);
+  lcm_set_reg(175, 33);
+  lcm_set_reg(176, 39);
+  lcm_set_reg(177, 84);
+  lcm_set_reg(178, 103);
+  lcm_set_reg(179, 57);
+  lcm_set_reg(192, 8);
+  lcm_set_reg(193, 26);
+  lcm_set_reg(194, 39);
+  lcm_set_reg(195, 21);
+  lcm_set_reg(196, 23);
+  lcm_set_reg(197, 42);
+  lcm_set_reg(198, 30);
+  lcm_set_reg(199, 31);
+  lcm_set_reg(200, 139);
+  lcm_set_reg(201, 27);
+  lcm_set_reg(202, 39);
+  lcm_set_reg(203, 120);
+  lcm_set_reg(204, 24);
+  lcm_set_reg(205, 24);
+  lcm_set_reg(206, 76);
+  lcm_set_reg(207, 33);
+  lcm_set_reg(208, 39);
+  lcm_set_reg(209, 84);
+  lcm_set_reg(210, 103);
+  lcm_set_reg(211, 57);
+  data_array[1] = 25270527;
+  data_array[0] = 272642;
+  dsi_set_cmdq(data_array, 2, 1);
+  lcm_set_reg(96, 34);
+  data_array[1] = 8493311;
+  data_array[0] = 272642;
+  dsi_set_cmdq(data_array, 2, 1);
+  lcm_set_reg(54, 3);
+
+  lcm_set(0x11);
+  MDELAY(120);
+  lcm_set(0x29);
+  MDELAY(60);
+
 #ifdef BUILD_LK
     printf("[erick-lk]%s\n", __func__);
 #else
@@ -601,19 +655,7 @@ static unsigned int lcm_esd_check(void)
 
 static unsigned int lcm_esd_recover(void)
 {
-    unsigned char para = 0;
-
-    SET_RESET_PIN(1);
-    SET_RESET_PIN(0);
-    MDELAY(1);
-    SET_RESET_PIN(1);
-    MDELAY(120);
-      push_table(lcm_initialization_setting, sizeof(lcm_initialization_setting) / sizeof(struct LCM_setting_table), 1);
-    MDELAY(10);
-      push_table(lcm_sleep_out_setting, sizeof(lcm_sleep_out_setting) / sizeof(struct LCM_setting_table), 1);
-    MDELAY(10);
-    dsi_set_cmdq_V2(0x35, 1, &para, 1);     ///enable TE
-    MDELAY(10);
+    lcm_init();
 
     return TRUE;
 }

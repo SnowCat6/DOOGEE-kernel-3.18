@@ -60,6 +60,7 @@
 		data = <1>;
 		pwm_config = <0 0 0 0 0>;
 	};
+
 	vibrator0:vibrator@0 {
 		compatible = "mediatek,vibrator";
 		vib_timer = <25>;
@@ -80,20 +81,10 @@
 	   };
 	 /*  start sensor */
 	cust_accel@0 {
-		compatible	= "mediatek,kxtj2_1009_new";
-		i2c_num		= <2>;
-		i2c_addr	= <0xe 0 0 0>;
-		direction	= <0x0>;
-		power_id	= <0xffff>;
-		power_vol	= <0>;
-		firlen		= <0>;
-		is_batch_supported	= <0>;
-	};
-	cust_accel@1 {
-		compatible = "mediatek,mxc400x";
+		compatible = "mediatek,cust_mxc400x";
 		i2c_num 	= <0x2>;
 		i2c_addr 	= <0x15 0x0 0x0 0x0>;
-		direction 	= <0x0>;
+		direction 	= <0x3>;
 		power_id 	= <0xffff>;
 		power_vol 	= <0x0>;
 		firlen 		= <0x0>;
@@ -101,19 +92,20 @@
 	};
 
 	cust_alsps@0 {
-		compatible	= "mediatek,epl2182";
-		i2c_num		= <2>;
-		i2c_addr	= <0x49 0 0 0>;
-		polling_mode_ps	= <0>;
-		polling_mode_als= <1>;
-		power_id	= <0xffff>;
-		power_vol	= <0>;
-		als_level = <0x0 0x148 0x35d 0x561 0xc35 0x1e29 0x1e57 0x314d 0x5a16 0x6f0e 0x81fa 0xb80c 0xe15e 0xe15e 0xffff>;
-		als_value = <0x0 0x85 0x130 0x1f6 0x3ec 0x7d5 0xbf2 0x138d 0x1f48 0x271a 0x2ee0 0x3e80 0x4e20 0x4e20 0x4e20 0x4e20>;
-		ps_threshold_high = <500>;
-		ps_threshold_low = <300>;
+		compatible = "mediatek,epl259x";
+		i2c_num = <0x2>;
+		i2c_addr = <0x49 0x0 0x0 0x0>;
+		polling_mode_ps = <0x0>;
+		polling_mode_als = <0x1>;
+		power_id = <0xffff>;
+		power_vol = <0x0>;
+		als_level = <0x0 0x7d 0x13f 0x20d 0x443 0x9b0 0xbf2 0x13fb 0x218d 0x2a11 0x3239 0x458f 0x564b 0xffff 0xffff>;
+		als_value = <0x0 0x85 0x12f 0x1f8 0x3ea 0x7d3 0xbbe 0x138b 0x1f42 0x2710 0x2ee0 0x3e80 0x4e20 0x4e20 0x4e20 0x4e20>;
+		ps_threshold_high = <0x1a>;
+		ps_threshold_low = <0x15>;
 		is_batch_supported_ps = <0x0>;
 		is_batch_supported_als = <0x0>;
+		ps_integration_time = <0x24>;
 	};
 
 	 /* end sensor */
@@ -481,61 +473,6 @@
 };
 /* AUDIO end */
 
-/* DISPSYS GPIO standardization */
-&pio {
-
-	mtkfb_pins_mode_te_gpio: mode_te_gpio {
-		pins_cmd_dat {
-			pins = <PINMUX_GPIO68__FUNC_GPIO68>;
-		};
-	};
-
-	mtkfb_pins_mode_te_te: mode_te_te {
-		pins_cmd_dat {
-			pins = <PINMUX_GPIO68__FUNC_DSI_TE>;
-		};
-	};
-
-	mtkfb_pins_lcm_reset0: lcm_rst_out0_gpio {
-		pins_cmd_dat {
-			pins = <PINMUX_GPIO70__FUNC_LCM_RST>;
-			slew-rate = <1>;
-			output-low;
-		};
-	};
-
-	mtkfb_pins_lcm_reset1: lcm_rst_out1_gpio {
-		pins_cmd_dat {
-			pins = <PINMUX_GPIO70__FUNC_LCM_RST>;
-			slew-rate = <1>;
-			output-high;
-		};
-	};
-
-	mtkfb_pins_pwm_test_pin_mux_gpio66: pwm_test_pin_mux_gpio66 {
-		pins_cmd_dat {
-			pins = <PINMUX_GPIO66__FUNC_DISP_PWM>;
-			slew-rate = <1>;
-		};
-	};
-
-	mtkfb_pins_default: default {
-	};
-};
-
-&mtkfb {
-	pinctrl-names = "default", "mode_te_gpio", "mode_te_te",
-			"lcm_rst_out0_gpio", "lcm_rst_out1_gpio",
-			"pwm_test_pin_mux_gpio66";
-	pinctrl-0 = <&mtkfb_pins_default>;
-	pinctrl-1 = <&mtkfb_pins_mode_te_gpio>;
-	pinctrl-2 = <&mtkfb_pins_mode_te_te>;
-	pinctrl-3 = <&mtkfb_pins_lcm_reset0>;
-	pinctrl-4 = <&mtkfb_pins_lcm_reset1>;
-	pinctrl-5 = <&mtkfb_pins_pwm_test_pin_mux_gpio66>;
-	status = "okay";
-};
-/* DISPSYS GPIO standardization end */
 /* CAMERA GPIO standardization */
 &pio {
 	camera_pins_cam0_rst0: cam0@0 {
@@ -689,38 +626,6 @@
 };
 /* CAMERA GPIO end */
 
-/* FLASHLIGHT GPIO standardization */
-&pio {
-        flashlight_pins_default: default {
-        };
-
-        flashlight_pins_hwen_high: hwen_high {
-            pins_cmd_dat {
-                        pins = <PINMUX_GPIO8__FUNC_GPIO8>;
-                        slew-rate = <1>;
-                        output-high;
-                };
-        };
-
-        flashlight_pins_hwen_low: hwen_low {
-            pins_cmd_dat {
-                        pins = <PINMUX_GPIO8__FUNC_GPIO8>;
-                        slew-rate = <1>;
-                        output-low;
-                };
-        };
-
-};
-&flashlight {
-        pinctrl-names = "default", "hwen_high", "hwen_low";
-        pinctrl-0 = <&flashlight_pins_default>;
-        pinctrl-1 = <&flashlight_pins_hwen_high>;
-        pinctrl-2 = <&flashlight_pins_hwen_low>;
-        status = "okay";
-
-};
-/* FLASHLIGHT GPIO end */
-
 /* CONSYS GPIO standardization */
 &pio {
 	consys_pins_default: default {
@@ -766,4 +671,57 @@
 	status = "okay";
 
 };
+
+/* USB GPIO Kernal Standardization start */
+&pio {
+	usb_default: usb_default {
+	};
+
+	usb_mode1_iddig: iddig_irq_init {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO9__FUNC_USB_IDDIG>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+	};
+
+	usb_mode2_drvvbus: drvvbus_init {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
+			slew-rate = <1>;
+			bias-pull-down = <00>;
+		};
+	};
+
+	usb_mode2_drvvbus_low: drvvbus_low {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
+			slew-rate = <1>;
+			output-low;
+			bias-pull-down = <00>;
+		};
+	};
+
+	usb_mode2_drvvbus_high: drvvbus_high {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
+			slew-rate = <1>;
+			output-high;
+			bias-pull-down = <00>;
+		};
+	};
+};
+
+&usb0{
+	iddig_gpio = <0x9 0x6>;
+	drvvbus_gpio = <0xc 0x0>;
+	pinctrl-names = "usb_default", "iddig_irq_init", "drvvbus_init", "drvvbus_low", "drvvbus_high";
+	pinctrl-0 = <&usb_default>;
+	pinctrl-1 = <&usb_mode1_iddig>;
+	pinctrl-2 = <&usb_mode2_drvvbus>;
+	pinctrl-3 = <&usb_mode2_drvvbus_low>;
+	pinctrl-4 = <&usb_mode2_drvvbus_high>;
+	status = "okay";
+};
+
 /* CONSYS end */

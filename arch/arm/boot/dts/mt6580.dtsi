@@ -866,6 +866,10 @@
 			};
 		};
 
+		otg_iddig: otg_iddig {
+			compatible = "mediatek,otg_iddig";
+		};
+
 		usbphy0: usbphy@0 {
 			compatible = "usb-nop-xceiv";
 		};
