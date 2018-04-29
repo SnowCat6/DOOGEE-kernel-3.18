@@ -115,6 +115,8 @@
 	};
 };
 
+#include "KIICAA_POWER_bat_setting.dtsi"
+
 /* mmc start */
 &mmc0 {
 	clk_src = /bits/ 8 <MSDC0_CLKSRC_208MHZ>;
