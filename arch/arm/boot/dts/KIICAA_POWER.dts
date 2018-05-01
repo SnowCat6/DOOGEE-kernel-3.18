@@ -309,7 +309,7 @@
 &pio {
 	alsps_intpin_cfg: alspspincfg {
 	    pins_cmd_dat {
-			pins = <PINMUX_GPIO6__FUNC_EINT6>;
+			pins = <PINMUX_GPIO18__FUNC_EINT2>;
 			slew-rate = <0>;
 			bias-pull-up = <00>;
 		};
@@ -350,7 +350,7 @@
 	};
 	ACCDET_pins_eint_as_int: eint@0 {
 		pins_cmd_dat {
-			pins = <PINMUX_GPIO0__FUNC_EINT0>;
+			pins = <PINMUX_GPIO14__FUNC_EINT14>;
 			slew-rate = <0>;
 			bias-disable;
 		};
@@ -405,14 +405,14 @@
 	};
 	ctp_pins_rst_output0: rstoutput0 {
 		pins_cmd_dat {
-			pins = <PINMUX_GPIO2__FUNC_GPIO2>;
+			pins = <PINMUX_GPIO6__FUNC_GPIO6>;
 			slew-rate = <1>;
 			output-low;
 		};
 	};
 	ctp_pins_rst_output1: rstoutput1 {
 		pins_cmd_dat {
-			pins = <PINMUX_GPIO2__FUNC_GPIO2>;
+			pins = <PINMUX_GPIO6__FUNC_GPIO6>;
 			slew-rate = <1>;
 			output-high;
 		};
@@ -464,7 +464,7 @@
 	AUD_pins_extamp_high:extampouthigh {
 
 		pins_cmd_dat {
-			pins = <PINMUX_GPIO4__FUNC_GPIO4>;
+			pins = <PINMUX_GPIO17__FUNC_GPIO17>;
 			slew-rate = <1>;
 			output-high;
 		};
@@ -473,7 +473,7 @@
 	AUD_pins_extamp_low:extampoutlow {
 
 		pins_cmd_dat {
-			pins = <PINMUX_GPIO4__FUNC_GPIO4>;
+			pins = <PINMUX_GPIO17__FUNC_GPIO17>;
 			slew-rate = <1>;
 			output-low;
 		};
@@ -702,7 +702,7 @@
 
 	usb_mode2_drvvbus: drvvbus_init {
 		pins_cmd_dat {
-			pins = <PINMUX_GPIO13__FUNC_GPIO13>;
+			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
 			slew-rate = <1>;
 			bias-pull-down = <00>;
 		};
@@ -710,7 +710,7 @@
 
 	usb_mode2_drvvbus_low: drvvbus_low {
 		pins_cmd_dat {
-			pins = <PINMUX_GPIO13__FUNC_GPIO13>;
+			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
 			slew-rate = <1>;
 			output-low;
 			bias-pull-down = <00>;
@@ -719,14 +719,14 @@
 
 	usb_mode2_drvvbus_high: drvvbus_high {
 		pins_cmd_dat {
-			pins = <PINMUX_GPIO13__FUNC_GPIO13>;
+			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
 			slew-rate = <1>;
 			output-high;
 			bias-pull-down = <00>;
 		};
 	};
 /*** main_ktd265 */
-	main_ktd265_en_pin_low:@0 {
+	main_ktd265_en_pin_low:main_ktd265_en_pin_low@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO10__FUNC_GPIO10>;
 			slew-rate = <0x1>;
@@ -734,7 +734,7 @@
 		};
 	};
 
-	main_ktd265_en_pin_high: @1 {
+	main_ktd265_en_pin_high: main_ktd265_en_pin_high@1 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO10__FUNC_GPIO10>;
 			slew-rate = <0x1>;
@@ -742,7 +742,7 @@
 		};
 	};
 
-	main_ktd265_mode_pin_low: @0 {
+	main_ktd265_mode_pin_low: main_ktd265_mode_pin_low@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
 			slew-rate = <0x1>;
@@ -750,7 +750,7 @@
 		};
 	};
 
-	main_ktd265_mode_pin_high: @1 {
+	main_ktd265_mode_pin_high: main_ktd265_mode_pin_high@1 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
 			slew-rate = <0x1>;
@@ -758,7 +758,7 @@
 		};
 	};
 /*** FLASH ****************/
-	main_wd3124db_en_pin_low: @0 {
+	main_wd3124db_en_pin_low: main_wd3124db_en_pin_low@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO10__FUNC_GPIO10>;
 			slew-rate = <0x1>;
@@ -766,7 +766,7 @@
 		};
 	};
 
-	main_wd3124db_en_pin_high: @1 {
+	main_wd3124db_en_pin_high: main_wd3124db_en_pin_high@1 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO10__FUNC_GPIO10>;
 			slew-rate = <0x1>;
@@ -774,7 +774,7 @@
 		};
 	};
 
-	main_wd3124db_flash_pin_low: @0 {
+	main_wd3124db_flash_pin_low: main_wd3124db_flash_pin_low@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
 			slew-rate = <0x1>;
@@ -782,7 +782,7 @@
 		};
 	};
 
-	main_wd3124db_flash_pin_high: @1 {
+	main_wd3124db_flash_pin_high: main_wd3124db_flash_pin_high@1 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
 			slew-rate = <0x1>;
@@ -790,7 +790,7 @@
 		};
 	};
 /*** FAKE FRONT CANERA *****************/
-	main_fake_en_pin_low: @0 {
+	main_fake_en_pin_low: main_fake_en_pin_low@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO4__FUNC_GPIO4>;
 			slew-rate = <0x1>;
@@ -798,7 +798,7 @@
 		};
 	};
 
-	main_fake_en_pin_high: @1 {
+	main_fake_en_pin_high: main_fake_en_pin_high@1 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO4__FUNC_GPIO4>;
 			slew-rate = <0x1>;
@@ -806,7 +806,7 @@
 		};
 	};
 
-	sub_fake_en_pin_low: @0 {
+	sub_fake_en_pin_low: sub_fake_en_pin_low@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO9__FUNC_GPIO9>;
 			slew-rate = <0x1>;
@@ -814,7 +814,7 @@
 		};
 	};
 
-	sub_fake_en_pin_high: @1 {
+	sub_fake_en_pin_high: sub_fake_en_pin_high@1 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO9__FUNC_GPIO9>;
 			slew-rate = <0x1>;
