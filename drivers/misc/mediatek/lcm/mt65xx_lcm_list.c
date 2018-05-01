@@ -86,8 +86,8 @@ LCM_DRIVER *lcm_driver_list[] = {
 #if defined(ILI9806E_HLT_HD720_DSI)
 	&ili9806e_hlt_hd720_dsi,
 #endif
-#if defined(ILI9881_HDS_HD720_5P0_H1_T592_OTD)
-	&ili9881_hds_hd720_5p0_h1_t592_otd,
+#if defined(ILI9881_HSD_HD720_5P0_HL_T592_OTD)
+	&ili9881_hsd_hd720_5p0_hl_t592_otd,
 #endif
 
 

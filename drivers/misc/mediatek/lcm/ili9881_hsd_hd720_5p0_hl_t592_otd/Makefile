@@ -8,7 +8,7 @@ endif
 ccflags-y += -Wno-unused-variable -g
 ccflags-y += -Wno-unused-function -g
 
-obj-y +=ili9881_hds_hd720_5p0_h1_t592_otd.o
+obj-y +=ili9881_hsd_hd720_5p0_hl_t592_otd.o
 
 
 

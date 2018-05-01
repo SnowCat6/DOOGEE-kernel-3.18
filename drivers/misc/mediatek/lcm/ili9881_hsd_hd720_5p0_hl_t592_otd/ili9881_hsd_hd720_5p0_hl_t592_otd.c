@@ -711,9 +711,9 @@ static unsigned int lcm_compare_id(void)
 // ---------------------------------------------------------------------------
 //  Get LCM Driver Hooks
 // ---------------------------------------------------------------------------
-LCM_DRIVER ili9881_hds_hd720_5p0_h1_t592_otd = 
+LCM_DRIVER ili9881_hsd_hd720_5p0_hl_t592_otd = 
 {
-    .name           = "ili9881_hds_hd720_5p0_h1_t592_otd",
+    .name           = "ili9881_hsd_hd720_5p0_hl_t592_otd",
     .set_util_funcs = lcm_set_util_funcs,
     .get_params     = lcm_get_params,
     .init           = lcm_init,
