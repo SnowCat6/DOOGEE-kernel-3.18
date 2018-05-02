@@ -17,29 +17,6 @@
 	};
 	flashlight:flashlight {
 		compatible = "mediatek,flashlight-custom";
-		flashlight_main_support = <0x1 0x3>;
-		flashlight_sub_support = <0x1 0x1>;
-		flashlight_isnk_num = <0x0 0x0 0x1 0x1>;
-		pinctrl-names = "default", "main_ktd265_en_pin_low", "main_ktd265_en_pin_high",
-				"main_ktd265_mode_pin_low", "main_ktd265_mode_pin_high",
-				"main_wd3124db_en_pin_low", "main_wd3124db_en_pin_high",
-				"main_wd3124db_flash_pin_low", "main_wd3124db_flash_pin_high",
-				"main_fake_en_pin_low", "main_fake_en_pin_high",
-				"sub_fake_en_pin_low", "sub_fake_en_pin_high";
-		pinctrl-0 = <&camera_pins_default>;
-		pinctrl-1 = <&main_ktd265_en_pin_low>;
-		pinctrl-2 = <&main_ktd265_en_pin_high>;
-		pinctrl-3 = <&main_ktd265_mode_pin_low>;
-		pinctrl-4 = <&main_ktd265_mode_pin_high>;
-		pinctrl-5 = <&main_wd3124db_en_pin_low>;
-		pinctrl-6 = <&main_wd3124db_en_pin_high>;
-		pinctrl-7 = <&main_wd3124db_flash_pin_low>;
-		pinctrl-8 = <&main_wd3124db_flash_pin_high>;
-		pinctrl-9 = <&main_fake_en_pin_low>;
-		pinctrl-10 = <&main_fake_en_pin_high>;
-		pinctrl-11 = <&sub_fake_en_pin_low>;
-		pinctrl-12 = <&sub_fake_en_pin_high>;
-		status = "okay";
 	};
 	led@0 {
 		compatible = "mediatek,red";
@@ -357,6 +334,7 @@
 	};
 };
 /*ACCDET END*/
+
 /* TOUCH GPIO standardization */
 &touch {
 	tpd-resolution = <720 1280>;
@@ -483,11 +461,20 @@
 	};
 
 	AUD_pins_extamp2_high:extamp2outhigh {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO17__FUNC_GPIO17>;
+			slew-rate = <0x1>;
+			output-high;
+		};
 	};
 
 	AUD_pins_extamp2_low:extamp2outlow {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO17__FUNC_GPIO17>;
+			slew-rate = <0x1>;
+			output-low;
+		};
 	};
-
 };
 /* AUDIO end */
 
@@ -612,7 +599,94 @@
 			pins = <PINMUX_GPIO75__FUNC_GPIO75>;
 		};
 	};
+/***************************/
+	cam_sub_id {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO21__FUNC_GPIO21>;
+			slew-rate = <0x0>;
+			bias-disable;
+		};
+	};
 
+	cam_main_id {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO16__FUNC_GPIO16>;
+			slew-rate = <0x0>;
+			bias-disable;
+		};
+	};
+
+	cam_main2_id {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO20__FUNC_GPIO20>;
+			slew-rate = <0x0>;
+			bias-disable;
+		};
+	};
+
+	cam2@0 {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO7__FUNC_GPIO7>;
+			slew-rate = <0x1>;
+			output-low;
+		};
+	};
+
+	cam2@1 {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO7__FUNC_GPIO7>;
+			slew-rate = <0x1>;
+			output-high;
+		};
+	};
+
+	cam2@2 {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO8__FUNC_GPIO8>;
+			slew-rate = <0x1>;
+			output-low;
+		};
+	};
+
+	cam2@3 {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO8__FUNC_GPIO8>;
+			slew-rate = <0x1>;
+			output-high;
+		};
+	};
+
+	mipi_to_cam2_oe {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO83__FUNC_GPIO83>;
+			slew-rate = <0x1>;
+			output-low;
+		};
+	};
+
+	mipi_to_cam2_sel {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO81__FUNC_GPIO81>;
+			slew-rate = <0x1>;
+			output-low;
+		};
+	};
+
+	mipi_to_cam1_oe {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO83__FUNC_GPIO83>;
+			slew-rate = <0x1>;
+			output-low;
+		};
+	};
+
+	mipi_to_cam1_sel {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO81__FUNC_GPIO81>;
+			slew-rate = <0x1>;
+			output-high;
+		};
+	};
 
 };
 &kd_camera_hw1 {
@@ -728,8 +802,38 @@
 			bias-pull-down = <00>;
 		};
 	};
+};
+
+&usb0{
+	iddig_gpio = <0x9 0x6>;
+	drvvbus_gpio = <0xc 0x0>;
+	pinctrl-names = "usb_default", "iddig_irq_init", "drvvbus_init", "drvvbus_low", "drvvbus_high";
+	pinctrl-0 = <&usb_default>;
+	pinctrl-1 = <&usb_mode1_iddig>;
+	pinctrl-2 = <&usb_mode2_drvvbus>;
+	pinctrl-3 = <&usb_mode2_drvvbus_low>;
+	pinctrl-4 = <&usb_mode2_drvvbus_high>;
+	status = "okay";
+};
+
+/* CONSYS end */
+
+&pio{
+	pins_cfg {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO82__FUNC_EINT1>;
+			slew-rate = <0x0>;
+			bias-disable;
+		};
+	};
+
+	pins_default {
+	};
+};
+/* CAMERA */
+&pio {
 /*** main_ktd265 */
-	main_ktd265_en_pin_low:main_ktd265_en_pin_low@0 {
+	main_ktd265_en_pin_low:main_ktd265_en@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO10__FUNC_GPIO10>;
 			slew-rate = <0x1>;
@@ -737,7 +841,7 @@
 		};
 	};
 
-	main_ktd265_en_pin_high: main_ktd265_en_pin_high@1 {
+	main_ktd265_en_pin_high: main_ktd265_en@1 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO10__FUNC_GPIO10>;
 			slew-rate = <0x1>;
@@ -745,23 +849,23 @@
 		};
 	};
 
-	main_ktd265_mode_pin_low: main_ktd265_mode_pin_low@0 {
+	main_ktd265_mode_pin_low: main_ktd265_mode@0 {
 		pins_cmd_dat {
-			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
+			pins = <PINMUX_GPIO11__FUNC_GPIO11>;
 			slew-rate = <0x1>;
 			output-low;
 		};
 	};
 
-	main_ktd265_mode_pin_high: main_ktd265_mode_pin_high@1 {
+	main_ktd265_mode_pin_high: main_ktd265_mode@1 {
 		pins_cmd_dat {
-			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
+			pins = <PINMUX_GPIO11__FUNC_GPIO11>;
 			slew-rate = <0x1>;
 			output-high;
 		};
 	};
 /*** FLASH ****************/
-	main_wd3124db_en_pin_low: main_wd3124db_en_pin_low@0 {
+	main_wd3124db_en_pin_low: main_wd3124db_en@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO10__FUNC_GPIO10>;
 			slew-rate = <0x1>;
@@ -769,7 +873,7 @@
 		};
 	};
 
-	main_wd3124db_en_pin_high: main_wd3124db_en_pin_high@1 {
+	main_wd3124db_en_pin_high: main_wd3124db_en@1 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO10__FUNC_GPIO10>;
 			slew-rate = <0x1>;
@@ -777,23 +881,23 @@
 		};
 	};
 
-	main_wd3124db_flash_pin_low: main_wd3124db_flash_pin_low@0 {
+	main_wd3124db_flash_pin_low: main_wd3124db_flash@0 {
 		pins_cmd_dat {
-			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
+			pins = <PINMUX_GPIO11__FUNC_GPIO11>;
 			slew-rate = <0x1>;
 			output-low;
 		};
 	};
 
-	main_wd3124db_flash_pin_high: main_wd3124db_flash_pin_high@1 {
+	main_wd3124db_flash_pin_high: main_wd3124db_flash@1 {
 		pins_cmd_dat {
-			pins = <PINMUX_GPIO12__FUNC_GPIO12>;
+			pins = <PINMUX_GPIO11__FUNC_GPIO11>;
 			slew-rate = <0x1>;
 			output-high;
 		};
 	};
 /*** FAKE FRONT CANERA *****************/
-	main_fake_en_pin_low: main_fake_en_pin_low@0 {
+	main_fake_en_pin_low: main_fake_en@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO4__FUNC_GPIO4>;
 			slew-rate = <0x1>;
@@ -801,7 +905,7 @@
 		};
 	};
 
-	main_fake_en_pin_high: main_fake_en_pin_high@1 {
+	main_fake_en_pin_high: main_fake_en@1 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO4__FUNC_GPIO4>;
 			slew-rate = <0x1>;
@@ -809,7 +913,7 @@
 		};
 	};
 
-	sub_fake_en_pin_low: sub_fake_en_pin_low@0 {
+	sub_fake_en_pin_low: sub_fake_en@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO9__FUNC_GPIO9>;
 			slew-rate = <0x1>;
@@ -817,14 +921,17 @@
 		};
 	};
 
-	sub_fake_en_pin_high: sub_fake_en_pin_high@1 {
+	sub_fake_en_pin_high: sub_fake_en@1 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO9__FUNC_GPIO9>;
 			slew-rate = <0x1>;
 			output-high;
 		};
 	};
-/*** SPI ********************/
+};
+
+/******* SPI FINGERPRINT *******/
+&pio {
 	spi_int_init {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO15__FUNC_EINT15>;
@@ -897,17 +1004,30 @@
 		};
 	};
 };
-
-&usb0{
-	iddig_gpio = <0x9 0x6>;
-	drvvbus_gpio = <0xc 0x0>;
-	pinctrl-names = "usb_default", "iddig_irq_init", "drvvbus_init", "drvvbus_low", "drvvbus_high";
-	pinctrl-0 = <&usb_default>;
-	pinctrl-1 = <&usb_mode1_iddig>;
-	pinctrl-2 = <&usb_mode2_drvvbus>;
-	pinctrl-3 = <&usb_mode2_drvvbus_low>;
-	pinctrl-4 = <&usb_mode2_drvvbus_high>;
+/* FLASH */
+&flashlight
+{
+	flashlight_main_support = <0x1 0x3>;
+	flashlight_sub_support = <0x1 0x1>;
+	flashlight_isnk_num = <0x0 0x0 0x1 0x1>;
+	pinctrl-names = "default", "main_ktd265_en_pin_low", "main_ktd265_en_pin_high",
+			"main_ktd265_mode_pin_low", "main_ktd265_mode_pin_high",
+			"main_wd3124db_en_pin_low", "main_wd3124db_en_pin_high",
+			"main_wd3124db_flash_pin_low", "main_wd3124db_flash_pin_high",
+			"main_fake_en_pin_low", "main_fake_en_pin_high",
+			"sub_fake_en_pin_low", "sub_fake_en_pin_high";
+	pinctrl-0 = <&camera_pins_default>;
+	pinctrl-1 = <&main_ktd265_en_pin_low>;
+	pinctrl-2 = <&main_ktd265_en_pin_high>;
+	pinctrl-3 = <&main_ktd265_mode_pin_low>;
+	pinctrl-4 = <&main_ktd265_mode_pin_high>;
+	pinctrl-5 = <&main_wd3124db_en_pin_low>;
+	pinctrl-6 = <&main_wd3124db_en_pin_high>;
+	pinctrl-7 = <&main_wd3124db_flash_pin_low>;
+	pinctrl-8 = <&main_wd3124db_flash_pin_high>;
+	pinctrl-9 = <&main_fake_en_pin_low>;
+	pinctrl-10 = <&main_fake_en_pin_high>;
+	pinctrl-11 = <&sub_fake_en_pin_low>;
+	pinctrl-12 = <&sub_fake_en_pin_high>;
 	status = "okay";
 };
-
-/* CONSYS end */
