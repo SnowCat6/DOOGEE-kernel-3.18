@@ -4,6 +4,11 @@
 #include "mt6580.dtsi"
 
 / {
+	pmu {
+		compatible = "arm,cortex-a7-pmu";
+		interrupts = <0x0 0x4 0x8 0x0 0x5 0x8 0x0 0x6 0x8 0x0 0x7 0x8>;
+	};
+
 	memory@80000000 {
 		device_type = "memory";
 		reg = <0 0x80000000 0 0x1E800000>;
@@ -80,8 +85,8 @@
 		atag,videolfb-lcmname= "nt35590_AUO";
 	   };
 	 /*  start sensor */
-	cust_accel@0 {
-		compatible = "mediatek,cust_mxc400x";
+	cust_accel@1 {
+		compatible = "mediatek,mxc400x";
 		i2c_num 	= <0x2>;
 		i2c_addr 	= <0x15 0x0 0x0 0x0>;
 		direction 	= <0x3>;
@@ -113,10 +118,32 @@
 	mt-extmem@0 {
 		compatible = "mediatek,mt-extmem";
 	};
+	fingerprint@ {
+		compatible = "mediatek,fingerprint";
+		vfingerprint-supply = <0xe>;
+		pinctrl-names = "default", "state_spi_eint_init", "state_eint_pull_down", "state_eint_pull_disable", "state_spi_rst_low", "state_spi_rst_high", "state_spi_cs_init", "state_spi_ck_init", "state_spi_mosi_init", "state_spi_miso_init";
+		pinctrl-0 = <&gpiodefault>;
+		pinctrl-1 = <&spi_int_init>;
+		pinctrl-2 = <&spi_int_out0>;
+		pinctrl-3 = <&spi_int_out1>;
+		pinctrl-4 = <&spi_rst_out0>;
+		pinctrl-5 = <&spi_int_out1>;
+		pinctrl-6 = <&spi_cs_init>;
+		pinctrl-7 = <&spi_ck_init>;
+		pinctrl-8 = <&spi_mosi_init>;
+		pinctrl-9 = <&spi_miso_init>;
+		interrupt-parent = <&eintc>;
+		interrupts = <0xf 0x2>;
+		debounce = <0xf 0x0>;
+		status = "okay";
+	};
+
+	cdfinger_tee {
+		compatible = "cdfinger,fingerprint_tee";
+	};
 };
 
 #include "KIICAA_POWER_bat_setting.dtsi"
-
 /* mmc start */
 &mmc0 {
 	clk_src = /bits/ 8 <MSDC0_CLKSRC_208MHZ>;
@@ -932,7 +959,10 @@
 
 /******* SPI FINGERPRINT *******/
 &pio {
-	spi_int_init {
+	gpiodefault: gpiodefault {
+	};
+
+	spi_int_init: spi_int_init {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO15__FUNC_EINT15>;
 			slew-rate = <0x0>;
@@ -940,7 +970,7 @@
 		};
 	};
 
-	spi_int_out0@0 {
+	spi_int_out0: spi_int_out0@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO15__FUNC_GPIO15>;
 			slew-rate = <0x1>;
@@ -948,7 +978,7 @@
 		};
 	};
 
-	spi_int_out1@1 {
+	spi_int_out1: spi_int_out1@1 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO15__FUNC_GPIO15>;
 			slew-rate = <0x1>;
@@ -956,7 +986,7 @@
 		};
 	};
 
-	spi_rst_out0@0 {
+	spi_rst_out0: spi_rst_out0@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO19__FUNC_GPIO19>;
 			slew-rate = <0x1>;
@@ -964,7 +994,7 @@
 		};
 	};
 
-	spi_rst_out1@1 {
+	spi_rst_out1: spi_rst_out1@1 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO19__FUNC_GPIO19>;
 			slew-rate = <0x1>;
@@ -972,7 +1002,7 @@
 		};
 	};
 
-	spi_cs_init@0 {
+	spi_cs_init: spi_cs_init@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO0__FUNC_SPI1_CS>;
 			slew-rate = <0x1>;
@@ -980,7 +1010,7 @@
 		};
 	};
 
-	spi_ck_init@0 {
+	spi_ck_init: spi_ck_init@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO1__FUNC_SPI1_SCK>;
 			slew-rate = <0x1>;
@@ -988,7 +1018,7 @@
 		};
 	};
 
-	spi_mosi_init@0 {
+	spi_mosi_init: spi_mosi_init@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO2__FUNC_SPI1_MOSI>;
 			slew-rate = <0x1>;
@@ -996,7 +1026,7 @@
 		};
 	};
 
-	spi_miso_init@0 {
+	spi_miso_init: spi_miso_init@0 {
 		pins_cmd_dat {
 			pins = <PINMUX_GPIO3__FUNC_SPI1_MISO>;
 			slew-rate = <0x0>;

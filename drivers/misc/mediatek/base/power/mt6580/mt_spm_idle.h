@@ -47,6 +47,7 @@ extern unsigned int dpidle_profile[4];
 #define DEEPIDLE_LOG_REDUCED   1
 #define DEEPIDLE_LOG_FULL      2
 
+extern int is_teei_ready(void);
 /*
  * for Screen On Deep Idle
  */
