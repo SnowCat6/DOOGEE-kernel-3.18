@@ -11,3 +11,6 @@ obj-$(CONFIG_MTK_MPU6515A)		+= mpu6515/
 obj-$(CONFIG_MTK_BMA222E)		+= bma222e/
 obj-$(CONFIG_MTK_MPU6050G)   +=  mpu6050g/
 obj-$(CONFIG_MTK_STK8BAXX) += stk8baxx/
+obj-$(CONFIG_MTK_KXTJ2_1009_NEW)   +=  KXTJ2_1009-new/
+obj-$(CONFIG_MTK_MXC400X_NEW)   +=  mxc400x-new/
+

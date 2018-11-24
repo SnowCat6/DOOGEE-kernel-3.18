@@ -584,7 +584,7 @@ static ssize_t mtp_read(struct file *fp, char __user *buf,
 		static DEFINE_RATELIMIT_STATE(ratelimit, 1 * HZ, 5);
 		static int skip_cnt;
 
-		if (!strstr(current->comm, "MtpServer")) {
+		if (!strstr(current->comm, "recovery") && !strstr(current->comm, "MtpServer")) {
 			MTP_QUEUE_DBG("NOT MtpServer.........\n");
 			mtp_dbg_dump();
 

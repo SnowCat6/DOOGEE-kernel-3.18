@@ -133,7 +133,7 @@ config TOUCHSCREEN_MTK_FT5X0X
 	  To compile this dirver as a module, choose M here: the
 	  module will be called.
 
-source "drivers/input/touchscreen/mediatek/ft5x0x/Kconfig"
+source "drivers/input/touchscreen/mediatek/ft5x0x_gesture/Kconfig"
 
 
 config TOUCHSCREEN_MTK_FT6336S

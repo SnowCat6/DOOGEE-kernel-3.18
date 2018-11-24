@@ -23,3 +23,6 @@ source "drivers/misc/mediatek/sensors-1.0/accelerometer/mpu6515/Kconfig"
 source "drivers/misc/mediatek/sensors-1.0/accelerometer/bma222e/Kconfig"
 source "drivers/misc/mediatek/sensors-1.0/accelerometer/mpu6050g/Kconfig"
 source "drivers/misc/mediatek/sensors-1.0/accelerometer/stk8baxx/Kconfig"
+source "drivers/misc/mediatek/sensors-1.0/accelerometer/KXTJ2_1009-new/Kconfig"
+#source "drivers/misc/mediatek/sensors-1.0/accelerometer/mxc400x-new/Kconfig"
+
